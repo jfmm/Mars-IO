@@ -24,14 +24,6 @@ h6 {
   text-transform: uppercase;
   letter-spacing: 4px; }
 
-/* UTILITY CLASSES
-==============================*/
-.container {
-  padding: 20px 40px; }
-
-.mars-data {
-  color: #e95124; }
-
 /* Dashboard Styles
 ==============================*/
 .logo {
@@ -59,6 +51,17 @@ h6 {
 #main-dash {
   background-color: #16161a; }
 
+.mars-data {
+  color: #e95124; }
+
+.module-heading {
+  font-weight: normal; }
+
+/* UTILITY CLASSES
+==============================*/
+.container {
+  padding: 20px 40px; }
+
 /* TEMPERATURE MODULE
 ===========================*/
 button.unit-toggle {
@@ -76,9 +79,6 @@ button.unit-toggle {
 
 button.unit-active {
   background-color: #1b1b1f; }
-
-.module-heading {
-  font-weight: normal; }
 
 .temp-module span {
   font-size: 3em; }
