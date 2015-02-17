@@ -19,14 +19,41 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-
-		
+		<!--- TYPEKIT SCRIPT -->
+		<script src="//use.typekit.net/imz4ftp.js"></script>
+		<script>try{Typekit.load();}catch(e){}</script>
     </head>
     <body>
         <!--[if lt IE 8]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-			<h1>Mars Weather</h1>
+			
+			<nav class="container">
+				<h1 class="logo">Mars IO</h1>
+				<ul class="nav-links">
+					<li><a href="#">About</a></li>
+					<li><a href="#">Credits</a></li>
+				</ul>
+			</nav>
+			<section id="main-dash" class="container">
+				<div class="dash-module">
+					<button data-unit="fahrenheit" class="unit-toggle unit-active">F<sup>&deg;</sup></button>
+					<button data-unit="celsius" class="unit-toggle button-group-right">C<sup>&deg;</sup></button>
+					<h2 class="module-heading">Temperature <span class="unit-symbol">( F )<sup>&deg;</sup></span></h2>
+					
+					<div class="temp-module temp-max">
+						<h4>Max Air Temp.</h4>
+						<span class="mars-data"></span>
+					</div>
+					
+					<div class="temp-module temp-min">
+						<h4>Min Air Temp.</h4>
+						<span class="mars-data"></span>
+					</div>
+				</div>
+			<aside class="update-info"></aside>
+			</section>
+			
         
 		 <footer>
 		 </footer>

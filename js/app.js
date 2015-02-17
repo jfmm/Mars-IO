@@ -2,6 +2,29 @@
 
 	'use strict';
 	
+	// DOM NODE CACHING
+	var maxTempContainer = $('.temp-max > span');
+	var minTempContainer = $('.temp-min > span');
+	var updateInfo = $('.update-info');
+	
+	
+	// API DATA
+	var updatedOn,
+			sol,
+			minTemp,
+			maxTemp,
+			minTempF,
+			maxTempF,
+			condition; 
+	
+	
+	
+	// load latest data on load
+	$('document').ready(loadMarsWeather);
+	
+	
+	
+	
 	function loadMarsWeather() {
 	
 		var latestReportUrl = 'http://marsweather.ingenology.com/v1/latest/?format=jsonp';
@@ -9,12 +32,29 @@
 		
 		function outputData(data) {
 			
-			var sol = data.report.sol;
-			var minTemp = data.report.min_temp;
-			var condition = data.report.atmo_opacity;
+			updatedOn = data.report.terrestrial_date;
+			sol = data.report.sol;
+			minTemp = data.report.min_temp; // in celsius
+			maxTemp = data.report.max_temp; // in celsius
+			minTempF = data.report.min_temp_fahrenheit;
+			maxTempF = data.report.max_temp_fahrenheit;
+			condition = data.report.atmo_opacity; // always sunny
 			
-			$('body').append("It's currently sol " + sol + " in mars. There's a min of " + minTemp + " and the planet is " + condition);
-
+			
+			/* 
+			*		DOM INJECTION
+			*/
+			
+			//update
+			updateInfo.text("Curiosity Sent Last Update on  " + updatedOn);
+			
+			// temp module
+			maxTempContainer.text(maxTempF).append('<sup>&deg;</sup>');
+			minTempContainer.text(minTempF).append('<sup>&deg;</sup>');
+			
+		
+			
+			
 		}
 	
 		
@@ -41,7 +81,47 @@
 	
 	
 	
+	/* User Interface code
+	===============================**/
 	
-	loadMarsWeather();
+	// Temp Unit Toggling
+	$('.unit-toggle').on('click', function(e) {
+		
+		var unitSymbol = $('.unit-symbol');
+		var unit = this.dataset.unit;
+		var button = $(this);
+	
+			
+			if(unit === 'celsius') {
+				
+				// load celsius data
+				maxTempContainer.text(maxTemp).append('<sup>&deg;</sup>');
+				minTempContainer.text(minTemp).append('<sup>&deg;</sup>');
+				
+				// change unit in heading
+				unitSymbol.text('( C )').append('<sup>&deg;</sup>');
+				
+				// add active class and remove the other button's
+				button.addClass('unit-active').siblings('button').removeClass('unit-active');
+			
+			} else {
+				//load fahrenheit data
+				maxTempContainer.text(maxTempF).append('<sup>&deg;</sup>');
+				minTempContainer.text(minTempF).append('<sup>&deg;</sup>');	
+				
+				// change unit in heading
+				unitSymbol.text('( F )').append('<sup>&deg;</sup>');
+			
+				// add active class and remove the other button's
+				button.addClass('unit-active').siblings('button').removeClass('unit-active');
+			
+				
+			}
+			
+				
+	});
+	
+	
 
-})(jQuery);
+
+})(jQuery); // end module

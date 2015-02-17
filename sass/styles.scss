@@ -1,5 +1,128 @@
+/* COLOR PALETTE
+==============================*/
+$black-bg: #1b1b1f;
+$white: #fff;
+$muted-black: #303039;
+$dark-black: darken($black-bg, 2%);
+$mars-orange: #e95124;
+$light-orange: #eb7812;
+$earth-blue: #4389cb;
+
+
+/*Typography
+=============================*/
+$proxima-nova: "proxima-nova";
+
+
+/* Global Styles
+===============================*/
+* {
+	-webkit-transition: 0.4s all ease;
+		-moz-transition: 0.4s all ease;
+				transition: 0.4s all ease;
+}
+
+
 body {
-	font-family: sans-serif;
-	color: tomato;
+	background-color: $black-bg;
+	color: $white;
+	font-family: $proxima-nova;		
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+	font-weight: 100;
+	text-transform: uppercase;
+	letter-spacing: 4px;
+}
+
+
+/* UTILITY CLASSES
+==============================*/
+
+.container {
+	padding: 20px 40px;
+}
+
+.mars-data {
+	color: $mars-orange;
+}
+
+
+/* Dashboard Styles
+==============================*/
+.logo {
+	display: inline-block;
+}
+
+
+
+.nav-links {
+	list-style: none;
+	float: right;
+	display: inline-block;
+	font-family: $proxima-nova;
+	text-transform: uppercase;
+	color: $white;
+	& li {
+		display: inline-block;
+		margin-right: 2em;
+	}
+	
+	& a {
+		color: $white;
+		text-decoration: none;
+		letter-spacing: 3px;
+	}
+	& a:hover {
+		color: $mars-orange;
+	}
+	&:visited {
+	
+	}
+}
+
+
+#main-dash {
+	background-color: $dark-black;
+}
+
+
+/* TEMPERATURE MODULE
+===========================*/
+button.unit-toggle {
+	color: $white;
+	background-color: $dark-black;
+	border: solid 1px #313137;
+	padding: 5px;
+	border-radius: 2px;
+	width: 10%;
+	&:focus {
+		outline: none;
+	}
+}
+
+.button-group-right {
+	margin-left: -6px;
+}
+
+button.unit-active {
+	background-color:  $black-bg;
+
+}
+
+
+
+
+.module-heading {
+	font-weight: normal;
+}
+
+.temp-module span {
+	font-size: 3em;
 }
 

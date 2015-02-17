@@ -1,5 +1,84 @@
+/* COLOR PALETTE
+==============================*/
+/*Typography
+=============================*/
+/* Global Styles
+===============================*/
+* {
+  -webkit-transition: 0.4s all ease;
+  -moz-transition: 0.4s all ease;
+  transition: 0.4s all ease; }
+
 body {
-  font-family: sans-serif;
-  color: tomato; }
+  background-color: #1b1b1f;
+  color: #fff;
+  font-family: "proxima-nova"; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 100;
+  text-transform: uppercase;
+  letter-spacing: 4px; }
+
+/* UTILITY CLASSES
+==============================*/
+.container {
+  padding: 20px 40px; }
+
+.mars-data {
+  color: #e95124; }
+
+/* Dashboard Styles
+==============================*/
+.logo {
+  display: inline-block; }
+
+.nav-links {
+  list-style: none;
+  float: right;
+  display: inline-block;
+  font-family: "proxima-nova";
+  text-transform: uppercase;
+  color: #fff; }
+  .nav-links li {
+    display: inline-block;
+    margin-right: 2em; }
+  .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 3px; }
+  .nav-links a:hover {
+    color: #e95124; }
+
+#main-dash {
+  background-color: #16161a; }
+
+/* TEMPERATURE MODULE
+===========================*/
+button.unit-toggle {
+  color: #fff;
+  background-color: #16161a;
+  border: solid 1px #313137;
+  padding: 5px;
+  border-radius: 2px;
+  width: 10%; }
+  button.unit-toggle:focus {
+    outline: none; }
+
+.button-group-right {
+  margin-left: -6px; }
+
+button.unit-active {
+  background-color: #1b1b1f; }
+
+.module-heading {
+  font-weight: normal; }
+
+.temp-module span {
+  font-size: 3em; }
 
 /*# sourceMappingURL=styles.css.map */
