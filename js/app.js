@@ -8,14 +8,8 @@
 	var updateInfo = $('.update-info');
 	
 	
-	// API DATA
-	var updatedOn,
-			sol,
-			minTemp,
-			maxTemp,
-			minTempF,
-			maxTempF,
-			condition; 
+	// API DATA Global Variables
+	var updatedOn, sol, minTemp, maxTemp, minTempF, maxTempF, condition; 
 	
 	
 	

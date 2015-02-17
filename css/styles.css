@@ -43,7 +43,9 @@ h6 {
   display: inline-block;
   font-family: "proxima-nova";
   text-transform: uppercase;
-  color: #fff; }
+  color: #fff;
+  margin-top: 30px;
+  /* to simulate vertical centering */ }
   .nav-links li {
     display: inline-block;
     margin-right: 2em; }
