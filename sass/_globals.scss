@@ -1,0 +1,109 @@
+/* Global Styles
+===============================*/
+* {
+	-webkit-transition: 0.4s all ease;
+		-moz-transition: 0.4s all ease;
+				transition: 0.4s all ease;
+}
+
+
+body {
+	background-color: $black-bg;
+	color: $white;
+	font-family: $proxima-nova;		
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+	font-weight: 100;
+	text-transform: uppercase;
+	letter-spacing: 4px;
+}
+
+
+
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+
+
+
+/* Dashboard Styles
+==============================*/
+.logo {
+	display: inline-block;
+}
+
+.mars-planet {
+	color: $mars-orange;
+	font-size: 17px;
+}
+
+.nav-links {
+	list-style: none;
+	float: right;
+	display: inline-block;
+	font-family: $proxima-nova;
+	text-transform: uppercase;
+	color: $white;
+	margin-top: 30px; /* to simulate vertical centering */
+		
+		& li {
+			display: inline-block;
+			margin-right: 2em;
+		}
+
+		& a {
+			color: $white;
+			text-decoration: none;
+			letter-spacing: 3px;
+		}
+		& a:hover {
+			color: $mars-orange;
+		}
+		&:visited {
+
+		}
+}
+
+
+#main-dash {
+	background-color: $dark-black;
+}
+
+
+//.dash-module {
+//	width: 50%;
+//	float: left;
+//	display: inline-block;
+//}
+
+.mars-data {
+	color: $mars-orange;
+}
+
+.module-heading {
+	font-weight: normal;
+}
+
+
+
+
+
+

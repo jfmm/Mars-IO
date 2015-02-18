@@ -1,0 +1,28 @@
+/* TEMPERATURE MODULE
+===========================*/
+button.unit-toggle {
+	color: $white;
+	background-color: $dark-black;
+	border: solid 1px #313137;
+	padding: 5px;
+	border-radius: 2px;
+	width: 10%;
+	
+	&:focus {
+		outline: none;
+	}
+}
+
+.button-group-right {
+	margin-left: -6px;
+}
+
+button.unit-active {
+	background-color:  $black-bg;
+
+}
+
+
+.temp-module span {
+	font-size: 3em;
+}
