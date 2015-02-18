@@ -11,6 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 				<meta name="apple-mobile-web-app-capable" content="yes">
 				<meta name="mobile-web-app-capable" content="yes">
+				<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 				<link type="text/css" rel="stylesheet" href="css/bower_components/normalize.css/normalize.css">
 				<link type="text/css" rel="stylesheet" href="css/styles.css">
 		
@@ -29,18 +30,21 @@
         <![endif]-->
 			
 			<nav class="container">
-				<h1 class="logo">Mars IO</h1>
+				<h1 class="logo">Mars<span class="mars-planet">&#9679;</span>IO</h1>
 				<ul class="nav-links">
 					<li><a href="#">About</a></li>
 					<li><a href="#">Credits</a></li>
 				</ul>
 			</nav>
-			<section id="main-dash" class="container">
+			<section id="main-dash" class="container clearfix">
 				
 				<!--  start temperature module -->
 				<div class="dash-module">
-					<button data-unit="fahrenheit" class="unit-toggle unit-active">F<sup>&deg;</sup></button>
-					<button data-unit="celsius" class="unit-toggle button-group-right">C<sup>&deg;</sup></button>
+					<div class="temp-settings">
+						<button data-unit="fahrenheit" class="unit-toggle unit-active">F<sup>&deg;</sup></button>
+						<button data-unit="celsius" class="unit-toggle button-group-right">C<sup>&deg;</sup></button>
+					</div>
+					
 					<h2 class="module-heading">Temperature <span class="unit-symbol">( F )<sup>&deg;</sup></span></h2>
 					
 					<div class="temp-module temp-max">
@@ -52,6 +56,11 @@
 						<h4>Min Air Temp.</h4>
 						<span class="mars-data"></span>
 					</div>
+				</div>
+				
+				<!-- temperature graph module -->
+				<div class="dash-module">
+						<svg id="temp-graph"><path d=""></path></svg>
 				</div>
 				
 				
