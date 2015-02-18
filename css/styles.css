@@ -24,10 +24,25 @@ h6 {
   text-transform: uppercase;
   letter-spacing: 4px; }
 
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table; }
+
+.clearfix:after {
+  clear: both; }
+
+.clearfix {
+  *zoom: 1; }
+
 /* Dashboard Styles
 ==============================*/
 .logo {
   display: inline-block; }
+
+.mars-planet {
+  color: #e95124;
+  font-size: 17px; }
 
 .nav-links {
   list-style: none;

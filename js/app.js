@@ -1,3 +1,9 @@
+// API DATA Global Variables
+var jsonReport, updatedOn, sol, minTemp, maxTemp, minTempF, maxTempF, condition; 
+
+
+
+
 (function ($) {
 
 	'use strict';
@@ -8,8 +14,7 @@
 	var updateInfo = $('.update-info');
 	
 	
-	// API DATA Global Variables
-	var updatedOn, sol, minTemp, maxTemp, minTempF, maxTempF, condition; 
+
 	
 	
 	
@@ -26,14 +31,16 @@
 		
 		function outputData(data) {
 			
+			jsonReport = data.report;
 			updatedOn = data.report.terrestrial_date;
 			sol = data.report.sol;
 			minTemp = data.report.min_temp; // in celsius
 			maxTemp = data.report.max_temp; // in celsius
 			minTempF = data.report.min_temp_fahrenheit;
 			maxTempF = data.report.max_temp_fahrenheit;
-			condition = data.report.atmo_opacity; // always sunny
+			condition = data.report.atmo_opacity; // always sunny, apparently...
 			
+		//	console.log(jsonReport);
 			
 			/* 
 			*		DOM INJECTION
@@ -57,17 +64,17 @@
 		/* GET JSONP FROM API
 		============================*/
 		$.ajax({
-    url: latestReportUrl,
+			
+    	url: latestReportUrl,
  
-    // The name of the callback parameter, as specified by the YQL service
-    jsonp: "callback",
+    	// The name of the callback parameter, as specified by the YQL service
+    	jsonp: "callback",
  
-    // Tell jQuery we're expecting JSONP
-    dataType: "jsonp",
+    	// Tell jQuery we're expecting JSONP
+    	dataType: "jsonp",
 
- 
-    // Work with the response
-    success: outputData
+    	// Work with the response
+    	success: outputData
 });
 
 		
@@ -115,7 +122,9 @@
 				
 	});
 	
-	
-
 
 })(jQuery); // end module
+
+
+
+
