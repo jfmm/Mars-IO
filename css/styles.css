@@ -66,6 +66,11 @@ h6 {
 #main-dash {
   background-color: #16161a; }
 
+.dash-module {
+  width: 50%;
+  float: left;
+  display: inline-block; }
+
 .mars-data {
   color: #e95124; }
 
