@@ -1,5 +1,18 @@
 // API DATA Global Variables
-var jsonReport, updatedOn, sol, minTemp, maxTemp, minTempF, maxTempF, condition; 
+var jsonReportLatest,
+		sol,
+		solarLongitue,
+		updatedOn, 
+		sol, 
+		minTemp, 
+		maxTemp, 
+		minTempF, 
+		maxTempF,
+		pressure,
+		season,
+		sunrise,
+		sunset,
+		condition; 
 
 
 
@@ -31,7 +44,7 @@ var jsonReport, updatedOn, sol, minTemp, maxTemp, minTempF, maxTempF, condition;
 		
 		function outputData(data) {
 			
-			jsonReport = data.report;
+			jsonReportLatest = data.report;
 			updatedOn = data.report.terrestrial_date;
 			sol = data.report.sol;
 			minTemp = data.report.min_temp; // in celsius
@@ -133,7 +146,7 @@ var jsonReport, updatedOn, sol, minTemp, maxTemp, minTempF, maxTempF, condition;
 /*=======================================
 *	D3.js Visualitzation Code
 *=======================================*/
-var dataset = [
+var data = [
 	{"date":"2012-03-20","total":3},
 	{"date":"2012-03-21","total":8},
 	{"date":"2012-03-22","total":-42},
@@ -144,25 +157,77 @@ var dataset = [
 ];
 
 // svg element dimensions
-var w = 500,
-		h = 300;
-
- //create svg element
-var svg = d3.select("#temp-graph").append("svg").attr("width", w).attr("height", h);
+var margin = {top: 30, right: 20, bottom: 30, left: 50},
+    width = 600 - margin.left - margin.right,
+    height = 270 - margin.top - margin.bottom;
 
 
-var circles = svg.selectAll("circle")
-    .data(dataset)
-    .enter()
-    .append("circle")
-		.style("fill", "#E95124");
+// Parse the date / time
+var parseDate = d3.time.format("%d-%b-%y").parse;
+
+// Set the ranges
+var x = d3.time.scale().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
 
 
- circles.attr("cx", function(d, i) {
-            return (i * 50) + 25;
-        })
-       .attr("cy", h/2)
-       .attr("r", function(d) {
-            return d.total;
-       });
+
+// Define the axes
+var xAxis = d3.svg.axis().scale(x)
+    .orient("bottom").ticks(5);
+
+var yAxis = d3.svg.axis().scale(y)
+    .orient("left").ticks(5);
+
+
+
+// Adds the svg canvas
+var svg = d3.select("#temp-graph")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform", 
+              "translate(" + margin.left + "," + margin.top + ")");
+
+
+						 
+// iterate over data						 
+data.forEach(function(d) {
+        d.date = new Date(d.date);
+        d.total = +d.total;
+				console.log(d.date);
+    });
+
+
+// Scale the range of the data
+x.domain(d3.extent(data, function(d) { return d.date; }));
+y.domain([0, d3.max(data, function(d) { return d.total; })]);
+
+// Scale the range of the data
+x.domain(d3.extent(data, function(d) { return d.date; }));
+y.domain([d3.min(data, function(d) { return d.total; }), d3.max(data, function(d) { return d.total; })]);
+
+// Define the line
+var valueline = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.total); });
+
+
+// Add the valueline path.
+svg.append("path")
+   .attr("class", "line")
+   .attr("d", valueline(data));
+
+
+// Add the X Axis
+svg.append("g")
+   .attr("class", "x axis")
+   .attr("transform", "translate(0," + height + ")")
+   .call(xAxis);
+
+// Add the Y Axis
+svg.append("g")
+   .attr("class", "y axis")
+   .call(yAxis);
+
 

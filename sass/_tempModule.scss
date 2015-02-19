@@ -26,3 +26,25 @@ button.unit-active {
 .temp-module span {
 	font-size: 3em;
 }
+
+
+/* SVG graphs styles
+========================*/
+path { 
+	stroke: $mars-orange;
+  stroke-width: 2;
+	fill: none;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: grey;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+}
+
+text {
+	fill: white;
+	font-weight: 100;
+}

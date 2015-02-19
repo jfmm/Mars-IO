@@ -98,4 +98,22 @@ button.unit-active {
 .temp-module span {
   font-size: 3em; }
 
+/* SVG graphs styles
+========================*/
+path {
+  stroke: #e95124;
+  stroke-width: 2;
+  fill: none; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges; }
+
+text {
+  fill: white;
+  font-weight: 100; }
+
 /*# sourceMappingURL=styles.css.map */
