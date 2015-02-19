@@ -1,3 +1,9 @@
+//TODO:
+	//THE ARRAY OF OBJECTS IS ALL FUCKED
+	// MUST DEBUG $.EACH
+	// NEED A BETTER METHOD
+
+
 // API DATA Global Variables
 var jsonReportLatest,
 		sol,
@@ -16,7 +22,7 @@ var jsonReportLatest,
 
 
 var temperatureArchive = []; // graph uses this dataset
-var dataSet;
+
 
 (function ($) {
 
@@ -105,9 +111,11 @@ var dataSet;
 		// on success fill the last 10 temperature data reports into an array
 		function getDataSet (data) {
 			
+		
 			
 			$.each(data.results, function(index, value){
 				
+			
 
 				var graphPointsMinTemp = {
 					date: value.terrestrial_date,
@@ -115,15 +123,16 @@ var dataSet;
 					min_temp_fahrenheit: value.min_temp_fahrenheit
 				};
 				
-				var graphPointsMaxTemp = {
-					date: value.terrestrial_date,
-					max_temp: value.max_temp,
-					max_temp_fahrenheit: value.max_temp_fahrenheit
-				};
+//				var graphPointsMaxTemp = {
+//					date: value.terrestrial_date,
+//					max_temp: value.max_temp,
+//					max_temp_fahrenheit: value.max_temp_fahrenheit
+//				};
 				
 		
 				//push objects to array
-				temperatureArchive.push(graphPointsMaxTemp, graphPointsMinTemp);
+				//temperatureArchive.push(graphPointsMaxTemp);
+				temperatureArchive.push(graphPointsMinTemp);
 				
 			
 			});
@@ -221,19 +230,13 @@ function drawChart() {
 
 	console.log(temperatureArchive);
 
+	
+	var data = temperatureArchive;
+	
 
-	var data = [
-		{"date":"2012-03-20","total":3},
-		{"date":"2012-03-21","total":8},
-		{"date":"2012-03-22","total":-42},
-		{"date":"2012-03-23","total":-3},
-		{"date":"2012-03-24","total":3},
-		{"date":"2012-03-25","total":20},
-		{"date":"2012-03-26","total":12}
-	];
 
 	// svg element dimensions
-	var margin = {top: 30, right: 20, bottom: 30, left: 40},
+	var margin = {top: 30, right: 20, bottom: 30, left: 50},
 			width = 600 - margin.left - margin.right,
 			height = 270 - margin.top - margin.bottom;
 
@@ -270,23 +273,25 @@ function drawChart() {
 	// iterate over data						 
 	data.forEach(function(d) {
 					d.date = new Date(d.date);
-					d.total = +d.total;
+					d.min_temp_fahrenheit = d.min_temp_fahrenheit;
 					//console.log(d.date);
+					console.log(d.min_temp_fahrenheit);
 			});
 
 
 	// Scale the range of the data
 	x.domain(d3.extent(data, function(d) { return d.date; }));
-	y.domain([0, d3.max(data, function(d) { return d.total; })]);
+	y.domain([0, d3.max(data, function(d) { return d.min_temp_fahrenheit; })]);
 
 	// Scale the range of the data
 	x.domain(d3.extent(data, function(d) { return d.date; }));
-	y.domain([d3.min(data, function(d) { return d.total; }), d3.max(data, function(d) { return d.total; })]);
+	y.domain([d3.min(data, function(d) { 
+		return d.min_temp_fahrenheit; }), d3.max(data, function(d) { return d.min_temp_fahrenheit; })]);
 
 	// Define the line
 	var valueline = d3.svg.line()
 			.x(function(d) { return x(d.date); })
-			.y(function(d) { return y(d.total); });
+			.y(function(d) { return y(d.min_temp_fahrenheit); });
 
 
 	// Add the valueline path.
