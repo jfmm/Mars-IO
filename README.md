@@ -4,17 +4,19 @@ The application uses data from the Open Source {MASS} API or Mars Atmospheric Ag
 
 The web app is not live yet, so this repository will serve as a way for me to develop and track changes as I build it.
 
+
 ##Technology Stack
 * HTML5
 * SVG
 * D3.js
 * jQuery
 * Sass
- 
-## License
-The MIT License (MIT)
 
-Copyright (c) [year] [fullname]
+
+ 
+## License MIT
+
+Copyright (c) [2015] [Jose Fernando Morales Mendizabal]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
