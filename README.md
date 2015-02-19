@@ -16,7 +16,7 @@ The web app is not live yet, so this repository will serve as a way for me to de
  
 ## License MIT
 
-Copyright (c) [2015] [Jose Fernando Morales Mendizabal]
+Copyright (c)  2015 Jose Fernando Morales Mendizabal
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
