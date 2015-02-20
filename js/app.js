@@ -101,17 +101,23 @@ var temperatureArchive = []; // graph uses this dataset
 	================================*/
 
 	
-	function loadArchive(pageNum) {
+	function loadArchive( pageNum ) {
 	
 		
-		var archiveUrl = "http://marsweather.ingenology.com/v1/archive/?format=jsonp";
-			
+		// if a page number is given, query that report
+		if(pageNum) 
+			var archiveUrl = "http://marsweather.ingenology.com/v1/archive/?page=" + pageNum + "&format=jsonp";
+		// otherwise request the latest 10 reports
+		else 
+			var archiveUrl = "http://marsweather.ingenology.com/v1/archive/?format=jsonp";
 		
+		
+		console.log(archiveUrl);
 		
 		// on success fill the last 10 temperature data reports into an array
 		function getDataSet (data) {
 			
-		
+	
 			
 			$.each(data.results, function(index, value){
 				
@@ -161,8 +167,6 @@ var temperatureArchive = []; // graph uses this dataset
 		}); // end AJAX
 		
 		
-		
-		//console.log(temperatureArchive.length);
 		
 	} // end load archive;
 	
@@ -227,9 +231,6 @@ var temperatureArchive = []; // graph uses this dataset
 *=======================================*/
 
 function drawChart() {
-
-	console.log(temperatureArchive);
-
 	
 	var data = temperatureArchive;
 	
@@ -279,14 +280,10 @@ function drawChart() {
 			});
 
 
+	
 	// Scale the range of the data
 	x.domain(d3.extent(data, function(d) { return d.date; }));
-	y.domain([0, d3.max(data, function(d) { return d.min_temp_fahrenheit; })]);
-
-	// Scale the range of the data
-	x.domain(d3.extent(data, function(d) { return d.date; }));
-	y.domain([d3.min(data, function(d) { 
-		return d.min_temp_fahrenheit; }), d3.max(data, function(d) { return d.min_temp_fahrenheit; })]);
+	y.domain([d3.min(data, function(d) { return d.min_temp_fahrenheit; }), d3.max(data, function(d) { return d.min_temp_fahrenheit; })]);
 
 	// Define the line
 	var valueline = d3.svg.line()
