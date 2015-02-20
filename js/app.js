@@ -69,13 +69,17 @@ var temperatureArchive = []; // graph uses this dataset
 			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
 			var days = Math.floor(diff / 86400000); // convert do days
 			
-			
-			//if days is 0, it was sent today
-			if(days === 0)
-				updateInfo.text("Curiosity Sent its last Update Today");
-			else
-				updateInfo.text("Curiosity Sent its last Update " + days + " days ago");
-			
+			//Create message
+			switch(days) {
+				case 0:
+					updateInfo.text("Curiosity Sent its last Update today");
+					break;
+				case 1:
+					updateInfo.text("Curiosity Sent its last Update " + days + " day ago");
+					break;
+				default: 
+					updateInfo.text("Curiosity Sent its last Update " + days + " days ago");
+			}
 			
 			// temp module
 			maxTempContainer.text(maxTempF).append('<sup>&deg;</sup>');
@@ -286,7 +290,7 @@ function drawChart() {
 	
 	// Scale the range of the data
 	x.domain(d3.extent(data, function(d) { return d.date; }));
-	y.domain([d3.min(data, function(d) { return d.min_temp_fahrenheit; }), d3.max(data, function(d) { return d.min_temp_fahrenheit; })]);
+	y.domain([d3.min(data, function(d) { return d.min_temp_fahrenheit; }), d3.max(data, function(d) { return 	d.min_temp_fahrenheit; })]);
 
 	// Define the line
 	var valueline = d3.svg.line()
