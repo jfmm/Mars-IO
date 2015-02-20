@@ -60,11 +60,22 @@ var temperatureArchive = []; // graph uses this dataset
 
 			
 			/* 
-			*		DOM INJECTION
+			*		DOM Manipulation
 			*/
 			
-			//update
-			updateInfo.text("Curiosity Sent Last Update on  " + updatedOn);
+			//update information
+			var today = new Date();
+			console.log(today);
+			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
+			var days = Math.floor(diff / 86400000); // convert do days
+			
+			
+			//if days is 0, it was sent today
+			if(days === 0)
+				updateInfo.text("Curiosity Sent its last Update Today");
+			else
+				updateInfo.text("Curiosity Sent its last Update " + days + " days ago");
+			
 			
 			// temp module
 			maxTempContainer.text(maxTempF).append('<sup>&deg;</sup>');
@@ -112,7 +123,6 @@ var temperatureArchive = []; // graph uses this dataset
 			var archiveUrl = "http://marsweather.ingenology.com/v1/archive/?format=jsonp";
 		
 		
-		console.log(archiveUrl);
 		
 		// on success fill the last 10 temperature data reports into an array
 		function getDataSet (data) {
@@ -137,7 +147,6 @@ var temperatureArchive = []; // graph uses this dataset
 				
 		
 				//push objects to array
-				//temperatureArchive.push(graphPointsMaxTemp);
 				temperatureArchive.push(graphPointsMinTemp);
 				
 			
@@ -215,14 +224,8 @@ var temperatureArchive = []; // graph uses this dataset
 			
 				
 	});
-		
-
-	
-
 
 })(jQuery); // end module
-
-
 
 
 
@@ -288,7 +291,8 @@ function drawChart() {
 	// Define the line
 	var valueline = d3.svg.line()
 			.x(function(d) { return x(d.date); })
-			.y(function(d) { return y(d.min_temp_fahrenheit); });
+			.y(function(d) { return y(d.min_temp_fahrenheit); })
+			.interpolate('monotone');
 
 
 	// Add the valueline path.
