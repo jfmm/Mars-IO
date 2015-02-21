@@ -1,9 +1,3 @@
-//TODO:
-	//THE ARRAY OF OBJECTS IS ALL FUCKED
-	// MUST DEBUG $.EACH
-	// NEED A BETTER METHOD
-
-
 // API DATA Global Variables
 var jsonReportLatest,
 		sol,
@@ -20,8 +14,9 @@ var jsonReportLatest,
 		sunset,
 		condition; 
 
-
-var temperatureArchive = []; // graph uses this dataset
+// D3.js arrays for archival datasets
+var celsiusTemperatureArchive = []; 
+var fahrenheitTemperatureArchive = [];
 
 
 (function ($) {
@@ -65,23 +60,25 @@ var temperatureArchive = []; // graph uses this dataset
 			
 			//update information
 			var today = new Date();
-			console.log(today);
 			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
 			var days = Math.floor(diff / 86400000); // convert do days
 			
-			//Create message
+			//Create "days since update" message
 			switch(days) {
+				
 				case 0:
 					updateInfo.text("Curiosity Sent its last Update today");
 					break;
+				
 				case 1:
 					updateInfo.text("Curiosity Sent its last Update " + days + " day ago");
 					break;
+				
 				default: 
 					updateInfo.text("Curiosity Sent its last Update " + days + " days ago");
 			}
 			
-			// temp module
+			// append temperature readings in fahrenheit by default
 			maxTempContainer.text(maxTempF).append('<sup>&deg;</sup>');
 			minTempContainer.text(minTempF).append('<sup>&deg;</sup>');
 
@@ -128,38 +125,6 @@ var temperatureArchive = []; // graph uses this dataset
 		
 		
 		
-		// on success fill the last 10 temperature data reports into an array
-		function getDataSet (data) {
-			
-	
-			
-			$.each(data.results, function(index, value){
-				
-			
-
-				var graphPointsMinTemp = {
-					date: value.terrestrial_date,
-					min_temp: value.min_temp,
-					min_temp_fahrenheit: value.min_temp_fahrenheit
-				};
-				
-//				var graphPointsMaxTemp = {
-//					date: value.terrestrial_date,
-//					max_temp: value.max_temp,
-//					max_temp_fahrenheit: value.max_temp_fahrenheit
-//				};
-				
-		
-				//push objects to array
-				temperatureArchive.push(graphPointsMinTemp);
-				
-			
-			});
-	
-		
-		}// end fillDataSet
-		
-	
 		/* GET JSONP FROM API
 		============================*/
 		$.ajax({
@@ -176,20 +141,58 @@ var temperatureArchive = []; // graph uses this dataset
     	success: getDataSet,
 			
 			// chart the response once we obtain the data
-			complete: drawChart
+			complete: function () {
+				drawChart("f"); // draw chart in fahrenheit 
+			}
 		}); // end AJAX
 		
 		
 		
+		
+		
+		// on success fill the last 10 temperature data reports into arrays
+		// that will be used for charting
+		function getDataSet (data) {
+			
+	
+			
+			$.each(data.results, function(index, value) {
+				
+	
+				var	celsiusTemps = {
+							date: value.terrestrial_date,
+							min_temp: value.min_temp,
+							max_temp: value.max_temp
+					};
+					
+				var	fahrenheitTemps = {
+							date: value.terrestrial_date,
+							min_temp: value.min_temp_fahrenheit,
+							max_temp: value.max_temp_fahrenheit	
+					};		
+		
+				
+				//push objects to the appropiate array
+				celsiusTemperatureArchive.push(celsiusTemps);
+				fahrenheitTemperatureArchive.push(fahrenheitTemps);
+				
+			
+			});
+	
+		
+		}// end getDataSet
+		
+
 	} // end load archive;
 	
 
 
-	loadArchive();	// execute for debugging
+	// load the last ten reports on page load
+	loadArchive();
 	
 	
 	
-	/* Temperature UI TOGGLE
+	/* Temperature values TOGGLE
 	===============================**/
 	
 	// Temp Unit Toggling
@@ -202,6 +205,9 @@ var temperatureArchive = []; // graph uses this dataset
 			
 			if(unit === 'celsius') {
 				
+				//change chart to celsius values
+				drawChart("c");
+				
 				// load celsius data
 				maxTempContainer.text(maxTemp).append('<sup>&deg;</sup>');
 				minTempContainer.text(minTemp).append('<sup>&deg;</sup>');
@@ -213,6 +219,10 @@ var temperatureArchive = []; // graph uses this dataset
 				button.addClass('unit-active').siblings('button').removeClass('unit-active');
 			
 			} else {
+				
+				//change chart to celsius values
+				drawChart("f");
+				
 				//load fahrenheit data
 				maxTempContainer.text(maxTempF).append('<sup>&deg;</sup>');
 				minTempContainer.text(minTempF).append('<sup>&deg;</sup>');	
@@ -233,16 +243,33 @@ var temperatureArchive = []; // graph uses this dataset
 
 
 
+
+
+
 /*=======================================
 *	D3.js Visualitzation Code
 *=======================================*/
 
-function drawChart() {
+
+function drawChart(tempUnit) {
 	
-	var data = temperatureArchive;
+	// clean the node before appending SVG
+	document.getElementById("temp-graph").innerHTML = "";
+	
+	
+	// choose data set according to temperature Unit passed
+	switch( tempUnit) {
+		case "f":
+			var data = fahrenheitTemperatureArchive;
+			break;
+		
+		case "c":
+			var data = celsiusTemperatureArchive;
+	
+	}
 	
 
-
+	
 	// svg element dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 50},
 			width = 600 - margin.left - margin.right,
@@ -278,24 +305,23 @@ function drawChart() {
 
 
 
-	// iterate over data						 
+	// iterate over data and transform date strings to date objects				 
 	data.forEach(function(d) {
-					d.date = new Date(d.date);
-					d.min_temp_fahrenheit = d.min_temp_fahrenheit;
-					//console.log(d.date);
-					console.log(d.min_temp_fahrenheit);
-			});
+	
+		d.date = new Date(d.date);
+
+	});
 
 
 	
 	// Scale the range of the data
 	x.domain(d3.extent(data, function(d) { return d.date; }));
-	y.domain([d3.min(data, function(d) { return d.min_temp_fahrenheit; }), d3.max(data, function(d) { return 	d.min_temp_fahrenheit; })]);
+	y.domain(d3.extent(data, function(d) { return d.min_temp; }));
 
 	// Define the line
 	var valueline = d3.svg.line()
 			.x(function(d) { return x(d.date); })
-			.y(function(d) { return y(d.min_temp_fahrenheit); })
+			.y(function(d) { return y(d.min_temp); })
 			.interpolate('monotone');
 
 
@@ -318,4 +344,5 @@ function drawChart() {
 
 }
 
-	
+
+
