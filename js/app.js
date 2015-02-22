@@ -220,7 +220,7 @@ var fahrenheitTemperatureArchive = [];
 			
 			} else {
 				
-				//change chart to celsius values
+				//chart temperatures in fahrenheit
 				drawChart("f");
 				
 				//load fahrenheit data
@@ -238,6 +238,24 @@ var fahrenheitTemperatureArchive = [];
 			
 				
 	});
+	
+	
+				/* Slider UI
+				===================*/
+				document.getElementById("time-traveler").onchange = function() {
+
+					var value = this.value;
+					var page = value / 10;
+
+					// clear the arrays before loading them with new archive data
+					celsiusTemperatureArchive.length = 0; 
+					fahrenheitTemperatureArchive.length = 0;
+					
+					loadArchive(page);	
+
+				;}
+
+
 
 })(jQuery); // end module
 
@@ -249,6 +267,9 @@ var fahrenheitTemperatureArchive = [];
 /*=======================================
 *	D3.js Visualitzation Code
 *=======================================*/
+// TODO: CHART 2 GRAPHS
+// 1 FOR MIN TEMPS
+// 1 FOR MAX TEMPS
 
 
 function drawChart(tempUnit) {
@@ -300,9 +321,9 @@ function drawChart(tempUnit) {
 					.attr("width", width + margin.left + margin.right)
 					.attr("height", height + margin.top + margin.bottom)
 			.append("g")
-					.attr("transform", 
-								"translate(" + margin.left + "," + margin.top + ")");
-
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	
+	
 
 
 	// iterate over data and transform date strings to date objects				 
@@ -313,22 +334,35 @@ function drawChart(tempUnit) {
 	});
 
 
-	
 	// Scale the range of the data
 	x.domain(d3.extent(data, function(d) { return d.date; }));
-	y.domain(d3.extent(data, function(d) { return d.min_temp; }));
+	y.domain([d3.min(data, function(d){ return d.min_temp;}), d3.max(data, function(d){ return d.max_temp;})]);
 
-	// Define the line
-	var valueline = d3.svg.line()
+	
+	
+	// Define min tempthe line
+	var minTempLine = d3.svg.line()
 			.x(function(d) { return x(d.date); })
 			.y(function(d) { return y(d.min_temp); })
 			.interpolate('monotone');
+	
+	// define the max temp line
+	var maxTempLine = d3.svg.line()
+			.x(function(d) { return x(d.date); })
+			.y(function(d) { return y(d.max_temp); })
+			.interpolate('monotone');
+	
 
 
-	// Add the valueline path.
+	// Add the min temperature path.
 	svg.append("path")
 		 .attr("class", "line")
-		 .attr("d", valueline(data));
+		 .attr("d", minTempLine(data));
+	
+	//add the max temperature line
+	svg.append("path")
+		 .attr("class", "line")
+		 .attr("d", maxTempLine(data));
 
 
 	// Add the X Axis
@@ -346,3 +380,5 @@ function drawChart(tempUnit) {
 
 
 
+	
+	
