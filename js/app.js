@@ -142,7 +142,19 @@ var fahrenheitTemperatureArchive = [];
 			
 			// chart the response once we obtain the data
 			complete: function () {
-				drawChart("f"); // draw chart in fahrenheit 
+				
+				// get the data attribute that currently has the active btn state,
+				// use swtich statement to pass it to the fn below
+				var activeToggleButton = $('button.unit-toggle.unit-active');
+				var activeToggleUnit = activeToggleButton.data("unit");
+				var unitToChart;
+				
+				if(activeToggleUnit === "fahrenheit")
+					unitToChart = "f";
+				else
+					unitToChart = "c";
+				
+				drawChart(unitToChart); // draw chart in the right unit 
 			}
 		}); // end AJAX
 		
@@ -343,14 +355,12 @@ function drawChart(tempUnit) {
 	// Define min tempthe line
 	var minTempLine = d3.svg.line()
 			.x(function(d) { return x(d.date); })
-			.y(function(d) { return y(d.min_temp); })
-			.interpolate('monotone');
+			.y(function(d) { return y(d.min_temp); });
 	
 	// define the max temp line
 	var maxTempLine = d3.svg.line()
 			.x(function(d) { return x(d.date); })
-			.y(function(d) { return y(d.max_temp); })
-			.interpolate('monotone');
+			.y(function(d) { return y(d.max_temp); });
 	
 
 
@@ -365,6 +375,8 @@ function drawChart(tempUnit) {
 		 .attr("d", maxTempLine(data));
 
 
+      
+	
 	// Add the X Axis
 	svg.append("g")
 		 .attr("class", "x axis")
