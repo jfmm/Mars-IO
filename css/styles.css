@@ -105,12 +105,17 @@ button.unit-active {
 
 /* SVG graphs styles
 ========================*/
-path {
-  stroke: #e95124;
+path, .minLine, .maxLine {
   stroke-width: 2;
   fill: none; }
 
-.axis path,
+.minLine {
+  stroke: #e95124; }
+
+.maxLine {
+  stroke: red; }
+
+.axis path, .axis .minLine, .axis .maxLine,
 .axis line {
   fill: none;
   stroke: grey;

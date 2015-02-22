@@ -30,10 +30,19 @@ button.unit-active {
 
 /* SVG graphs styles
 ========================*/
-path { 
-	stroke: $mars-orange;
-  stroke-width: 2;
+path {
+	stroke-width: 2;
 	fill: none;
+}
+
+.minLine { 
+	@extend path;
+	stroke: $mars-orange;
+}
+
+.maxLine {
+	@extend path;
+	stroke: red;
 }
 
 .axis path,

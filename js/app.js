@@ -356,12 +356,12 @@ function drawChart(tempUnit) {
 
 	// Add the min temperature path.
 	svg.append("path")
-		 .attr("class", "line")
+		 .attr("class", "minLine")
 		 .attr("d", minTempLine(data));
 	
 	//add the max temperature line
 	svg.append("path")
-		 .attr("class", "line")
+		 .attr("class", "maxLine")
 		 .attr("d", maxTempLine(data));
 
 
