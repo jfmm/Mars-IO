@@ -42,8 +42,8 @@ var fahrenheitTemperatureArchive = [];
 		
 		
 		function outputData(data) {
-			
-			jsonReportLatest = data.report;
+					
+			jsonReportLatest = data.report;			
 			updatedOn = data.report.terrestrial_date;
 			sol = data.report.sol;
 			minTemp = data.report.min_temp; // in celsius
@@ -71,11 +71,11 @@ var fahrenheitTemperatureArchive = [];
 					break;
 				
 				case 1:
-					updateInfo.text("Curiosity Sent its last Update " + days + " day ago");
+					updateInfo.text("Curiosity Sent its last Update " + days + " Earth day ago");
 					break;
 				
 				default: 
-					updateInfo.text("Curiosity Sent its last Update " + days + " days ago");
+					updateInfo.text("Curiosity Sent its last Update " + days + " Earth days ago");
 			}
 			
 			// append temperature readings in fahrenheit by default
@@ -253,9 +253,10 @@ var fahrenheitTemperatureArchive = [];
 	
 	
 				/* Slider UI
-				===================*/
-				document.getElementById("time-traveler").onchange = function() {
-
+				===================*/				
+				
+				$("#time-traveler").on("input", function() {
+					
 					var value = this.value;
 					var page = value / 10;
 
@@ -263,9 +264,9 @@ var fahrenheitTemperatureArchive = [];
 					celsiusTemperatureArchive.length = 0; 
 					fahrenheitTemperatureArchive.length = 0;
 					
-					loadArchive(page);	
-
-				;}
+					loadArchive(page);
+					
+				});
 
 
 
@@ -338,10 +339,11 @@ function drawChart(tempUnit) {
 	
 
 
-	// iterate over data and transform date strings to date objects				 
+	// iterate over data and transform date strings to date objects	to enable computations			 
 	data.forEach(function(d) {
 	
-		d.date = new Date(d.date);
+			d.date = new Date(d.date);
+		 	//d.date = parseDate(d.date);
 
 	});
 
