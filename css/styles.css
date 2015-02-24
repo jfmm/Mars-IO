@@ -64,6 +64,7 @@ h6 {
     color: #e95124; }
 
 #main-dash {
+  padding: 80px 40px;
   background-color: #16161a; }
 
 .dash-module {
@@ -102,6 +103,11 @@ button.unit-active {
 
 .temp-module span {
   font-size: 3em; }
+
+.legend {
+  padding-top: 15px;
+  text-align: center;
+  font-weight: 100; }
 
 /* SVG graphs styles
 ========================*/
