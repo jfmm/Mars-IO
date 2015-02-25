@@ -154,7 +154,11 @@ var fahrenheitTemperatureArchive = [];
 				else
 					unitToChart = "c";
 				
-				drawChart(unitToChart); // draw chart in the right unit 
+				drawChart(unitToChart); // draw chart in the right unit
+				
+				// add chart label and input control
+				$('#graph-ui').show();
+				
 			}
 		}); // end AJAX
 		

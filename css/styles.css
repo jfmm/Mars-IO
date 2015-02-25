@@ -104,7 +104,18 @@ button.unit-active {
 .temp-module span {
   font-size: 3em; }
 
+#graph-ui {
+  display: none; }
+
+.min-bul {
+  color: #e95124; }
+
+.max-bul {
+  color: red; }
+
 .legend {
+  display: inline;
+  padding-left: 10%;
   padding-top: 15px;
   text-align: center;
   font-weight: 100; }

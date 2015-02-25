@@ -27,7 +27,22 @@ button.unit-active {
 	font-size: 3em;
 }
 
+
+#graph-ui {
+	// the legend and controls are hidden while the graph data is being loaded
+	display: none; 
+}
+.min-bul {
+	color: $mars-orange;
+}
+
+.max-bul {
+	color: red;
+}
+
 .legend {
+	display: inline;
+	padding-left: 10%;
 	padding-top: 15px;
 	text-align: center;
 	font-weight: 100;

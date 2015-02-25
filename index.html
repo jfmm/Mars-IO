@@ -61,14 +61,17 @@
 				
 				<!-- temperature graph module -->
 			
-				<div class="dash-module">
+				<div class="dash-module graph-module">
 					<h4 style="text-align:center;">Historical Data</h4>
 			
-					<div id="temp-graph">
-					
+					<div id="temp-graph"></div>
+					<div id="graph-ui">
+						<input value="10" id="time-traveler" type="range" name="archive" min="10" max="100" step="10">
+						<div class="legend">
+							<span class="max-bul">&#9679;</span> Max Air Temperature vs. <span class="min-bul">&#9679;</span> Min Air Temperature</div>
+						
 					</div>
-							<div class="legend">Max Air Temperature vs. Min Air Temperature</div>
-					<input value="10" id="time-traveler" type="range" name="archive" min="10" max="100" step="10">	
+								
 				</div>
 				
 			</section>
@@ -80,5 +83,5 @@
 				<script src="js/jquery-1.8.0.min.js"></script>
         <script src="js/app.js"></script>
     </body>
-<!---- Website Handcrafted by Jose Morales-Mendizabal @ www.jf-mm.com ---------->
+<!-- Handcrafted by Jose Morales-Mendizabal @ www.jf-mm.com -->
 </html>
