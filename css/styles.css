@@ -83,6 +83,9 @@ h6 {
 .container {
   padding: 20px 40px; }
 
+.error {
+  color: red; }
+
 /* TEMPERATURE MODULE
 ===========================*/
 button.unit-toggle {

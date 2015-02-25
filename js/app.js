@@ -41,8 +41,8 @@ var fahrenheitTemperatureArchive = [];
 		var latestReportUrl = 'http://marsweather.ingenology.com/v1/latest/?format=jsonp';
 		
 		
-		function outputData(data) {
-					
+		function getData( data ) {
+			
 			jsonReportLatest = data.report;			
 			updatedOn = data.report.terrestrial_date;
 			sol = data.report.sol;
@@ -52,11 +52,17 @@ var fahrenheitTemperatureArchive = [];
 			maxTempF = data.report.max_temp_fahrenheit;
 			condition = data.report.atmo_opacity; // always sunny, apparently...
 			
-
 			
-			/* 
-			*		DOM Manipulation
-			*/
+			// cache latest report in local storage
+			window.localStorage.setItem("latestReport", JSON.stringify(data));
+			
+			
+		
+		}
+		
+		
+		
+		function outputData() {
 			
 			//update information
 			var today = new Date();
@@ -85,24 +91,47 @@ var fahrenheitTemperatureArchive = [];
 		}
 	
 		
+		
+		//TODO:
+		// Make AJAX call only if Local storage is empty OR
+		// there's a new report to store
+		if(localStorage.latestReport == null) {
+			
+		
+			/* GET JSONP FROM API
+			============================*/
+			$.ajax({
+
+				url: latestReportUrl,
+
+				// The name of the callback parameter, as specified by the YQL service
+				jsonp: "callback",
+
+				// Tell jQuery we're expecting JSONP
+				dataType: "jsonp",
+
+				// Work with the response
+				success: getData,
+
+				//output the latest report
+				complete: function () {
+					outputData();	
+				}
+			});
+
+		} else {
+			
+			var storedReport = JSON.parse(localStorage.latestReport);
+			
+			getData(storedReport);
+			
+			outputData();
+		
+		}
+		
 
 		
-		/* GET JSONP FROM API
-		============================*/
-		$.ajax({
-			
-    	url: latestReportUrl,
- 
-    	// The name of the callback parameter, as specified by the YQL service
-    	jsonp: "callback",
- 
-    	// Tell jQuery we're expecting JSONP
-    	dataType: "jsonp",
-
-    	// Work with the response
-    	success: outputData
-});
-
+		
 		
 }
 	
@@ -159,6 +188,11 @@ var fahrenheitTemperatureArchive = [];
 				// add chart label and input control
 				$('#graph-ui').show();
 				
+			},
+			
+			//if all fails
+			error: function(obj, errorString, o) {
+				$('#temp-graph').append('<h3 class="error">Oh no! Could not fetch the data</h3>');
 			}
 		}); // end AJAX
 		
@@ -259,7 +293,7 @@ var fahrenheitTemperatureArchive = [];
 				/* Slider UI
 				===================*/				
 				
-				$("#time-traveler").on("input", function() {
+				$("#time-traveler").on("change", function() {
 					
 					var value = this.value;
 					var page = value / 10;
@@ -270,6 +304,11 @@ var fahrenheitTemperatureArchive = [];
 					
 					loadArchive(page);
 					
+				});
+	
+				// on input show how many reports back in time
+				$('#time-traveler').on('input', function() {
+					console.log(this.value);
 				});
 
 
