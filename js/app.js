@@ -93,11 +93,10 @@ var fahrenheitTemperatureArchive = [];
 		
 		
 		
-		// Make AJAX call only if Local storage is empty OR
-		// there's a new report to store
+		// Request Latest data from API only once per session
 		if(sessionStorage.latestReport == null) {
 			
-			console.log("making api request.....");
+	
 			/* GET JSONP FROM API
 			============================*/
 			$.ajax({
@@ -121,7 +120,7 @@ var fahrenheitTemperatureArchive = [];
 
 		} else {
 			
-			console.log("using session storage to load data");
+			
 			var storedReport = JSON.parse(sessionStorage.latestReport);
 			
 			getData(storedReport);
@@ -421,6 +420,23 @@ function drawChart(tempUnit) {
 		 .attr("d", maxTempLine(data));
 
 
+	// draw the min-temp dots
+	svg.selectAll("dot")									
+		.data(data)											
+	.enter().append("circle")
+		.attr("class", "min-temp-chart-circle")
+		.attr("r", 5)	
+		.attr("cx", function(d) { return x(d.date); })		 
+		.attr("cy", function(d) { return y(d.min_temp); });
+	
+	// draw the max temp dots	
+	svg.selectAll("dot")									
+		.data(data)											
+	.enter().append("circle")
+		.attr("class", "max-temp-chart-circle")
+		.attr("r", 5)	
+		.attr("cx", function(d) { return x(d.date); })		 
+		.attr("cy", function(d) { return y(d.max_temp); });
       
 	
 	// Add the X Axis

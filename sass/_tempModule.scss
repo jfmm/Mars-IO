@@ -66,6 +66,16 @@ path {
 	stroke: red;
 }
 
+.min-temp-chart-circle {
+	stroke: $mars-orange;
+	fill: $dark-black;
+}
+
+.max-temp-chart-circle {
+	stroke: red;
+	fill: $dark-black;
+}
+
 .axis path,
 .axis line {
 	fill: none;

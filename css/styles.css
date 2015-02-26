@@ -135,6 +135,14 @@ path, .minLine, .maxLine {
 .maxLine {
   stroke: red; }
 
+.min-temp-chart-circle {
+  stroke: #e95124;
+  fill: #16161a; }
+
+.max-temp-chart-circle {
+  stroke: red;
+  fill: #16161a; }
+
 .axis path, .axis .minLine, .axis .maxLine,
 .axis line {
   fill: none;
