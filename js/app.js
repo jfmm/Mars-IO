@@ -19,6 +19,10 @@ var celsiusTemperatureArchive = [];
 var fahrenheitTemperatureArchive = [];
 
 
+var storedCelsiusTemperatureArchive; 
+var storedFahrenheitTemperatureArchive;
+
+
 (function ($) {
 
 	'use strict';
@@ -143,15 +147,16 @@ var fahrenheitTemperatureArchive = [];
 
 	
 	function loadArchive( pageNum ) {
-	
-		
+				
 		// if a page number is given, query that report
-		if(pageNum) 
+		if(pageNum) {
+			var archivePageKey = pageNum.toString();
 			var archiveUrl = "http://marsweather.ingenology.com/v1/archive/?page=" + pageNum + "&format=jsonp";
-		// otherwise request the latest 10 reports
-		else 
+		}// otherwise request the latest 10 reports
+		else {
+			var archivePageKey = "1";
 			var archiveUrl = "http://marsweather.ingenology.com/v1/archive/?format=jsonp";
-		
+		}
 		
 		
 		/* GET JSONP FROM API
@@ -185,7 +190,7 @@ var fahrenheitTemperatureArchive = [];
 				
 				drawChart(unitToChart); // draw chart in the right unit
 				
-				// add chart label and input control
+				// show chart label and input control
 				$('#graph-ui').show();
 				
 			},
@@ -227,12 +232,17 @@ var fahrenheitTemperatureArchive = [];
 				fahrenheitTemperatureArchive.push(fahrenheitTemps);
 				
 			
+			
 			});
 	
+				// store each data set in session storage to avoid multiple API calls
+		 		window.sessionStorage.setItem(archivePageKey + "c", JSON.stringify(celsiusTemperatureArchive));
+				window.sessionStorage.setItem(archivePageKey + "f", JSON.stringify(fahrenheitTemperatureArchive));
 		
-		}// end getDataSet
+	}// end getDataSet
 		
 
+		
 	} // end load archive;
 	
 
@@ -323,11 +333,6 @@ var fahrenheitTemperatureArchive = [];
 /*=======================================
 *	D3.js Visualitzation Code
 *=======================================*/
-// TODO: CHART 2 GRAPHS
-// 1 FOR MIN TEMPS
-// 1 FOR MAX TEMPS
-
-
 function drawChart(tempUnit) {
 	
 	// clean the node before appending SVG
@@ -353,8 +358,6 @@ function drawChart(tempUnit) {
 			height = 270 - margin.top - margin.bottom;
 
 
-	// Parse the date / time
-	var parseDate = d3.time.format("%d-%b-%y").parse;
 
 	// Set the ranges
 	var x = d3.time.scale().range([0, width]);
@@ -364,7 +367,7 @@ function drawChart(tempUnit) {
 
 	// Define the axes
 	var xAxis = d3.svg.axis().scale(x)
-			.orient("bottom").ticks(5);
+			.orient("bottom").ticks(4);
 
 	var yAxis = d3.svg.axis().scale(y)
 			.orient("left").ticks(5);
@@ -386,13 +389,16 @@ function drawChart(tempUnit) {
 	
 	
 
+	// Parse the date / time
+	//var parseDate = d3.time.format("%Y%m%d").parse;
+	//var myFormat =  d3.time.format("%Y-%m-%d");
+
 
 	// iterate over data and transform date strings to date objects	to enable computations			 
 	data.forEach(function(d) {
-	
-			d.date = new Date(d.date);
-		 	//d.date = parseDate(d.date);
-
+		
+		d.date = new Date(d.date); // ->> this works
+		
 	});
 
 
@@ -402,7 +408,7 @@ function drawChart(tempUnit) {
 
 	
 	
-	// Define min tempthe line
+	// Define min temp line
 	var minTempLine = d3.svg.line()
 			.x(function(d) { return x(d.date); })
 			.y(function(d) { return y(d.min_temp); });

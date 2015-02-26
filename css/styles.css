@@ -157,6 +157,9 @@ text {
   fill: white;
   font-weight: 100; }
 
+.axis text {
+  font-size: 12px; }
+
 div.tooltip {
   position: absolute;
   text-align: center;
