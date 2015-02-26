@@ -425,7 +425,7 @@ function drawChart(tempUnit) {
 		 .attr("d", maxTempLine(data));
 
 
-	// draw the min-temp dots
+	// draw the min-temp dots + tooltips
 	svg.selectAll("dot")									
 		.data(data)											
 	.enter().append("circle")
@@ -443,7 +443,10 @@ function drawChart(tempUnit) {
 			div.html(d.min_temp + "<sup>&deg;</sup>")	 
 				.style("left", d3.select(this).attr("cx") + "px")			 
 				.style("top", d3.select(this).attr("cy") + "px");
-			});
+			})
+		.on("mouseout", function(d){
+			div.style("opacity", 0);
+	});
 	
 	
 	// draw the max temp dots	+ tooltips
@@ -454,7 +457,7 @@ function drawChart(tempUnit) {
 		.attr("r", 5)	
 		.attr("cx", function(d) { return x(d.date); })		 
 		.attr("cy", function(d) { return y(d.max_temp); })
-		.on("mouseover", function(d) {		
+		.on("mouseover", function(d) {
             div.transition()
 				.duration(100)	
 				.style("opacity", 0);
@@ -464,7 +467,10 @@ function drawChart(tempUnit) {
 			div.html(d.max_temp + "<sup>&deg;</sup>")	 
 				.style("left", d3.select(this).attr("cx") + "px")			 
 				.style("top", d3.select(this).attr("cy") + "px");
-			});
+			})
+		.on("mouseout", function(d){
+			div.style("opacity", 0);
+	});
       
 	
 	// Add the X Axis
