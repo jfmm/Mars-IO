@@ -54,7 +54,7 @@ var fahrenheitTemperatureArchive = [];
 			
 			
 			// cache latest report in local storage
-			window.localStorage.setItem("latestReport", JSON.stringify(data));
+			window.sessionStorage.setItem("latestReport", JSON.stringify(data));
 			
 			
 		
@@ -92,12 +92,12 @@ var fahrenheitTemperatureArchive = [];
 	
 		
 		
-		//TODO:
+		
 		// Make AJAX call only if Local storage is empty OR
 		// there's a new report to store
-		if(localStorage.latestReport == null) {
+		if(sessionStorage.latestReport == null) {
 			
-		
+			console.log("making api request.....");
 			/* GET JSONP FROM API
 			============================*/
 			$.ajax({
@@ -121,7 +121,8 @@ var fahrenheitTemperatureArchive = [];
 
 		} else {
 			
-			var storedReport = JSON.parse(localStorage.latestReport);
+			console.log("using session storage to load data");
+			var storedReport = JSON.parse(sessionStorage.latestReport);
 			
 			getData(storedReport);
 			
