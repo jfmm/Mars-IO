@@ -370,6 +370,11 @@ function drawChart(tempUnit) {
 			.orient("left").ticks(5);
 
 
+	// Define 'div' for tooltips
+	var div = d3.select("#temp-graph")
+	.append("div")  // declare the tooltip div 
+	.attr("class", "tooltip")  // apply the 'tooltip' class
+	.style("opacity", 0);                  
 
 	// Adds the svg canvas
 	var svg = d3.select("#temp-graph")
@@ -427,16 +432,39 @@ function drawChart(tempUnit) {
 		.attr("class", "min-temp-chart-circle")
 		.attr("r", 5)	
 		.attr("cx", function(d) { return x(d.date); })		 
-		.attr("cy", function(d) { return y(d.min_temp); });
+		.attr("cy", function(d) { return y(d.min_temp); })
+		.on("mouseover", function(d) {		
+            div.transition()
+				.duration(100)	
+				.style("opacity", 0);
+			div.transition()
+				.duration(200)	
+				.style("opacity", 1);	
+			div.html(d.min_temp + "<sup>&deg;</sup>")	 
+				.style("left", d3.select(this).attr("cx") + "px")			 
+				.style("top", d3.select(this).attr("cy") + "px");
+			});
 	
-	// draw the max temp dots	
+	
+	// draw the max temp dots	+ tooltips
 	svg.selectAll("dot")									
 		.data(data)											
 	.enter().append("circle")
 		.attr("class", "max-temp-chart-circle")
 		.attr("r", 5)	
 		.attr("cx", function(d) { return x(d.date); })		 
-		.attr("cy", function(d) { return y(d.max_temp); });
+		.attr("cy", function(d) { return y(d.max_temp); })
+		.on("mouseover", function(d) {		
+            div.transition()
+				.duration(100)	
+				.style("opacity", 0);
+			div.transition()
+				.duration(200)	
+				.style("opacity", 1);	
+			div.html(d.max_temp + "<sup>&deg;</sup>")	 
+				.style("left", d3.select(this).attr("cx") + "px")			 
+				.style("top", d3.select(this).attr("cy") + "px");
+			});
       
 	
 	// Add the X Axis

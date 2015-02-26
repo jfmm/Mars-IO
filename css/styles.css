@@ -107,6 +107,9 @@ button.unit-active {
 .temp-module span {
   font-size: 3em; }
 
+#temp-graph {
+  position: relative; }
+
 #graph-ui {
   display: none; }
 
@@ -153,5 +156,15 @@ path, .minLine, .maxLine {
 text {
   fill: white;
   font-weight: 100; }
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  font: "proxima-nova";
+  border: 0px;
+  border-radius: 2px; }
 
 /*# sourceMappingURL=styles.css.map */
