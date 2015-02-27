@@ -120,11 +120,25 @@ button.unit-active {
   color: red; }
 
 .legend {
-  display: inline;
-  padding-left: 10%;
+  display: block;
   padding-top: 15px;
   text-align: center;
   font-weight: 100; }
+
+input#time-traveler {
+  display: block;
+  margin: 20px auto;
+  width: 70%; }
+  input#time-traveler::before {
+    content: "Present";
+    margin: -50px;
+    font-size: 11px;
+    font-weight: 100; }
+  input#time-traveler::after {
+    content: "Past";
+    margin: -10px;
+    font-size: 11px;
+    font-weight: 100; }
 
 /* SVG graphs styles
 ========================*/

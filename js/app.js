@@ -441,6 +441,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 	});
 
 
+	
 	// Scale the range of the data
 	x.domain(d3.extent(data, function(d) { return d.date; }));
 	y.domain([d3.min(data, function(d){ return d.min_temp;}), d3.max(data, function(d){ return d.max_temp;})]);
