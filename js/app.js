@@ -18,6 +18,8 @@ var jsonReportLatest,
 var celsiusTemperatureArchive = []; 
 var fahrenheitTemperatureArchive = [];
 
+var archivePage;
+var archivePageKey;
 
 var storedCelsiusTemperatureArchive; 
 var storedFahrenheitTemperatureArchive;
@@ -147,61 +149,81 @@ var storedFahrenheitTemperatureArchive;
 
 	
 	function loadArchive( pageNum ) {
+		
+		// get the data attribute that currently has the active btn state,
+		// use swtich statement to pass it to the fn below
+		var activeToggleButton = $('button.unit-toggle.unit-active');
+		var activeToggleUnit = activeToggleButton.data("unit");
+		var unitToChart;
+		
+		
+		if(activeToggleUnit === "fahrenheit")
+				unitToChart = "f";
+		else
+				unitToChart = "c";
+		
 				
-		// if a page number is given, query that report
+		// if a page number is given, query that report's page
 		if(pageNum) {
-			var archivePageKey = pageNum.toString();
+			archivePage = pageNum.toString();
 			var archiveUrl = "http://marsweather.ingenology.com/v1/archive/?page=" + pageNum + "&format=jsonp";
 		}// otherwise request the latest 10 reports
 		else {
-			var archivePageKey = "1";
+			archivePage = "1"; // first archive page is 1
 			var archiveUrl = "http://marsweather.ingenology.com/v1/archive/?format=jsonp";
 		}
 		
+		// create a key for session retrieval
+		archivePageKey = archivePage + unitToChart; 
 		
-		/* GET JSONP FROM API
-		============================*/
-		$.ajax({
+		
+		
+		// if the data is not in the session storage, fetch it
+		if(window.sessionStorage.getItem(archivePageKey) == null) {
+		
+			console.log("loading archive " + archivePage + " from API..." );
 			
-    	url: archiveUrl,
- 
-    	// The name of the callback parameter, as specified by the YQL service
-    	jsonp: "callback",
- 
-    	// Tell jQuery we're expecting JSONP
-    	dataType: "jsonp",
+			/* GET JSONP FROM API
+			============================*/
+			$.ajax({
 
-    	// Work with the response
-    	success: getDataSet,
-			
-			// chart the response once we obtain the data
-			complete: function () {
-				
-				// get the data attribute that currently has the active btn state,
-				// use swtich statement to pass it to the fn below
-				var activeToggleButton = $('button.unit-toggle.unit-active');
-				var activeToggleUnit = activeToggleButton.data("unit");
-				var unitToChart;
-				
-				if(activeToggleUnit === "fahrenheit")
-					unitToChart = "f";
-				else
-					unitToChart = "c";
-				
-				drawChart(unitToChart); // draw chart in the right unit
+				url: archiveUrl,
+
+				// The name of the callback parameter, as specified by the YQL service
+				jsonp: "callback",
+
+				// Tell jQuery we're expecting JSONP
+				dataType: "jsonp",
+
+				// Work with the response
+				success: getDataSet,
+
+				// chart the response once we obtain the data
+				complete: function () {
+
+					drawChart(unitToChart); // draw chart in the right unit
+
+					// show chart label and input control
+					$('#graph-ui').show();
+
+				},
+
+				//if all fails
+				error: function(obj, errorString, o) {
+					$('#temp-graph').append('<h3 class="error">Oh no! Could not fetch the data</h3>');
+				}
+			}); // end AJAX
+		
+		} else {
+		
+				console.log("using stored data...");
+				drawChart(unitToChart, true, archivePageKey);
 				
 				// show chart label and input control
 				$('#graph-ui').show();
-				
-			},
-			
-			//if all fails
-			error: function(obj, errorString, o) {
-				$('#temp-graph').append('<h3 class="error">Oh no! Could not fetch the data</h3>');
-			}
-		}); // end AJAX
+		}
 		
-		
+
 		
 		
 		
@@ -209,7 +231,7 @@ var storedFahrenheitTemperatureArchive;
 		// that will be used for charting
 		function getDataSet (data) {
 			
-	
+			console.log("JSONP REQUEST COMPLETE");
 			
 			$.each(data.results, function(index, value) {
 				
@@ -236,8 +258,8 @@ var storedFahrenheitTemperatureArchive;
 			});
 	
 				// store each data set in session storage to avoid multiple API calls
-		 		window.sessionStorage.setItem(archivePageKey + "c", JSON.stringify(celsiusTemperatureArchive));
-				window.sessionStorage.setItem(archivePageKey + "f", JSON.stringify(fahrenheitTemperatureArchive));
+		 		window.sessionStorage.setItem(archivePage + "c", JSON.stringify(celsiusTemperatureArchive));
+				window.sessionStorage.setItem(archivePage + "f", JSON.stringify(fahrenheitTemperatureArchive));
 		
 	}// end getDataSet
 		
@@ -262,11 +284,15 @@ var storedFahrenheitTemperatureArchive;
 		var unit = this.dataset.unit;
 		var button = $(this);
 	
+
+		
 			
 			if(unit === 'celsius') {
 				
-				//change chart to celsius values
-				drawChart("c");
+				if(archivePageKey)
+					drawChart("c", true, archivePage + "c");
+				else
+					drawChart("c");
 				
 				// load celsius data
 				maxTempContainer.text(maxTemp).append('<sup>&deg;</sup>');
@@ -280,8 +306,10 @@ var storedFahrenheitTemperatureArchive;
 			
 			} else {
 				
-				//chart temperatures in fahrenheit
-				drawChart("f");
+				if(archivePageKey)
+					drawChart("f", true, archivePage + "f");
+				else
+					drawChart("f");//chart temperatures in fahrenheit
 				
 				//load fahrenheit data
 				maxTempContainer.text(maxTempF).append('<sup>&deg;</sup>');
@@ -317,9 +345,9 @@ var storedFahrenheitTemperatureArchive;
 				});
 	
 				// on input show how many reports back in time
-				$('#time-traveler').on('input', function() {
-					console.log(this.value);
-				});
+//				$('#time-traveler').on('input', function() {
+//					console.log(this.value);
+//				});
 
 
 
@@ -333,24 +361,42 @@ var storedFahrenheitTemperatureArchive;
 /*=======================================
 *	D3.js Visualitzation Code
 *=======================================*/
-function drawChart(tempUnit) {
+function drawChart(tempUnit, loadCached, archiveKey) {
 	
 	// clean the node before appending SVG
 	document.getElementById("temp-graph").innerHTML = "";
-	
-	
-	// choose data set according to temperature Unit passed
-	switch( tempUnit) {
-		case "f":
-			var data = fahrenheitTemperatureArchive;
-			break;
-		
-		case "c":
-			var data = celsiusTemperatureArchive;
-	
+
+
+	// Choose the right data set
+	if(loadCached && tempUnit == "f") 
+	{
+		var data = JSON.parse(sessionStorage.getItem(archiveKey));
 	}
 	
+	else if (loadCached && tempUnit == "c") 
+	{
+		var data = JSON.parse(sessionStorage.getItem(archiveKey));
+	}
+	
+	else 
+	{
+		// choose data set according to temperature Unit passed
+		switch( tempUnit) {
+			case "f":
+				var data = fahrenheitTemperatureArchive;
+				break;
 
+			case "c":
+				var data = celsiusTemperatureArchive;
+		}
+	}
+	
+	
+	console.log(data);
+
+	/*-----------------------------
+	* DRAW LINE GRAPH
+	*-------------------------------*/
 	
 	// svg element dimensions
 	var margin = {top: 30, right: 20, bottom: 30, left: 50},
@@ -388,12 +434,7 @@ function drawChart(tempUnit) {
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
 	
-
-	// Parse the date / time
-	//var parseDate = d3.time.format("%Y%m%d").parse;
-	//var myFormat =  d3.time.format("%Y-%m-%d");
-
-
+	
 	// iterate over data and transform date strings to date objects	to enable computations			 
 	data.forEach(function(d) {
 		
