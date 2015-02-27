@@ -390,9 +390,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 				var data = celsiusTemperatureArchive;
 		}
 	}
-	
-	
-	console.log(data);
+
 
 	/*-----------------------------
 	* DRAW LINE GRAPH
