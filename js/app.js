@@ -368,12 +368,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 
 
 	// Choose the right data set
-	if(loadCached && tempUnit == "f") 
-	{
-		var data = JSON.parse(sessionStorage.getItem(archiveKey));
-	}
-	
-	else if (loadCached && tempUnit == "c") 
+	if(loadCached) 
 	{
 		var data = JSON.parse(sessionStorage.getItem(archiveKey));
 	}
