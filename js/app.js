@@ -526,8 +526,3 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 		 .call(yAxis);
 
 }
-
-
-
-	
-	
