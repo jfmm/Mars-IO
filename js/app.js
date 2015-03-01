@@ -258,7 +258,7 @@ var storedFahrenheitTemperatureArchive;
 			});
 	
 				// store each data set in session storage to avoid multiple API calls
-		 		window.sessionStorage.setItem(archivePage + "c", JSON.stringify(celsiusTemperatureArchive));
+				window.sessionStorage.setItem(archivePage + "c", JSON.stringify(celsiusTemperatureArchive));
 				window.sessionStorage.setItem(archivePage + "f", JSON.stringify(fahrenheitTemperatureArchive));
 		
 	}// end getDataSet
@@ -475,7 +475,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 		.attr("cx", function(d) { return x(d.date); })		 
 		.attr("cy", function(d) { return y(d.min_temp); })
 		.on("mouseover", function(d) {		
-            div.transition()
+			div.transition()
 				.duration(100)	
 				.style("opacity", 0);
 			div.transition()
@@ -499,7 +499,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 		.attr("cx", function(d) { return x(d.date); })		 
 		.attr("cy", function(d) { return y(d.max_temp); })
 		.on("mouseover", function(d) {
-            div.transition()
+			div.transition()
 				.duration(100)	
 				.style("opacity", 0);
 			div.transition()
@@ -512,7 +512,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 		.on("mouseout", function(d){
 			div.style("opacity", 0);
 	});
-      
+	  
 	
 	// Add the X Axis
 	svg.append("g")
