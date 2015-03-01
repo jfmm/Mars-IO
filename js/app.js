@@ -367,7 +367,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 	document.getElementById("temp-graph").innerHTML = "";
 
 
-	// Choose the right data set
+	// are we loading cached data. If so use it
 	if(loadCached) 
 	{
 		var data = JSON.parse(sessionStorage.getItem(archiveKey));
@@ -375,7 +375,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 	
 	else 
 	{
-		// choose data set according to temperature Unit passed
+		// else use the right array
 		switch( tempUnit) {
 			case "f":
 				var data = fahrenheitTemperatureArchive;
@@ -385,6 +385,8 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 				var data = celsiusTemperatureArchive;
 		}
 	}
+
+	
 
 
 	/*-----------------------------
@@ -427,15 +429,26 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	
 	
-	
+	var years = [];
 	// iterate over data and transform date strings to date objects	to enable computations			 
 	data.forEach(function(d) {
 		
 		d.date = new Date(d.date); // ->> this works
+		var year = d.date.getFullYear();
 		
+		years.push(year.toString());
+	
 	});
 
 
+	var yearRange = [years[0], years[years.length - 1]];
+	
+	if(yearRange[0] === yearRange[1])
+		d3.select("#year-range").text(yearRange[0]);
+	else
+		d3.select("#year-range").text(yearRange[0] + "-" + yearRange[1]);
+	
+	
 	
 	// Scale the range of the data
 	x.domain(d3.extent(data, function(d) { return d.date; }));
