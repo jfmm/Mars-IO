@@ -43,30 +43,12 @@ h6 {
 /* Dashboard Styles
 ==============================*/
 .logo {
-  display: inline-block; }
+  display: inline-block;
+  margin-left: 30px; }
 
 .mars-planet {
   color: #e95124;
   font-size: 17px; }
-
-.nav-links {
-  list-style: none;
-  float: right;
-  display: inline-block;
-  font-family: "proxima-nova";
-  text-transform: uppercase;
-  color: white;
-  margin-top: 30px;
-  /* to simulate vertical centering */ }
-  .nav-links li {
-    display: inline-block;
-    margin-right: 2em; }
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    letter-spacing: 3px; }
-  .nav-links a:hover {
-    color: #e95124; }
 
 #main-dash {
   height: 100%;
@@ -111,13 +93,17 @@ aside#sidebar-nav {
 ul.sidebar-nav-icons {
   list-style: none;
   padding: 0px;
+  margin: 0px;
   text-align: center; }
   ul.sidebar-nav-icons li {
     font-size: 14px;
     font-weight: 100;
-    margin-top: 60px;
     background-color: #131313;
-    padding: 30px 0px; }
+    border-right: 2px solid #131313;
+    padding: 60px 0px; }
+  ul.sidebar-nav-icons li.active {
+    background-color: #16161a !important;
+    border-right: 2px solid #1b1b1f; }
 
 .sidebar-icon {
   fill: #fff;
@@ -125,7 +111,7 @@ ul.sidebar-nav-icons {
   width: 80%;
   height: 70px; }
 
-.mercury {
+.active-icon {
   fill: #e95124; }
 
 /* TEMPERATURE MODULE

@@ -343,11 +343,25 @@ var storedFahrenheitTemperatureArchive;
 					loadArchive(page);
 					
 				});
+		
+		
+		var activeLink = $("li[class='active']");
+		var sidebarlink = $(".sidebar-nav-icons > li");
+		
+		sidebarlink.on('click', function() {
+			var clickedButton = $(this);
+				if(clickedButton.hasClass('active')) {
+					return false;
+				}
+						
+				else {
+						clickedButton.siblings('li').removeClass('active');
+						clickedButton.addClass('active');
+						
+				}
+						
+		});
 	
-				// on input show how many reports back in time
-//				$('#time-traveler').on('input', function() {
-//					console.log(this.value);
-//				});
 
 
 
