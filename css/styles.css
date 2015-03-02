@@ -9,10 +9,15 @@
   -moz-transition: 0.4s all ease;
   transition: 0.4s all ease; }
 
+html {
+  height: 100%; }
+
 body {
   background-color: #1b1b1f;
-  color: #fff;
-  font-family: "proxima-nova"; }
+  color: white;
+  font-family: "proxima-nova";
+  position: relative;
+  height: 100%; }
 
 h1,
 h2,
@@ -50,22 +55,31 @@ h6 {
   display: inline-block;
   font-family: "proxima-nova";
   text-transform: uppercase;
-  color: #fff;
+  color: white;
   margin-top: 30px;
   /* to simulate vertical centering */ }
   .nav-links li {
     display: inline-block;
     margin-right: 2em; }
   .nav-links a {
-    color: #fff;
+    color: white;
     text-decoration: none;
     letter-spacing: 3px; }
   .nav-links a:hover {
     color: #e95124; }
 
 #main-dash {
+  height: 100%;
   padding: 80px 40px;
-  background-color: #16161a; }
+  background-color: #16161a;
+  margin-left: 80px;
+  position: relative; }
+
+div.selected {
+  display: block !important; }
+
+.dash-module-container {
+  display: none; }
 
 .dash-module {
   width: 50%;
@@ -86,10 +100,38 @@ h6 {
 .error {
   color: red; }
 
+/* Nav Sidebar
+===============================*/
+aside#sidebar-nav {
+  position: absolute;
+  background-color: #131313;
+  min-height: 100%;
+  width: 80px; }
+
+ul.sidebar-nav-icons {
+  list-style: none;
+  padding: 0px;
+  text-align: center; }
+  ul.sidebar-nav-icons li {
+    font-size: 14px;
+    font-weight: 100;
+    margin-top: 60px;
+    background-color: #131313;
+    padding: 30px 0px; }
+
+.sidebar-icon {
+  fill: #fff;
+  position: relative;
+  width: 80%;
+  height: 70px; }
+
+.mercury {
+  fill: #e95124; }
+
 /* TEMPERATURE MODULE
 ===========================*/
 button.unit-toggle {
-  color: #fff;
+  color: white;
   background-color: #16161a;
   border: solid 1px #313137;
   padding: 5px;
@@ -141,11 +183,6 @@ input#time-traveler {
     margin: -50px;
     font-size: 11px;
     font-weight: 100; }
-  input#time-traveler::after {
-    content: "Past";
-    margin: -10px;
-    font-size: 11px;
-    font-weight: 100; }
 
 /* SVG graphs styles
 ========================*/
@@ -188,7 +225,6 @@ div.tooltip {
   height: 28px;
   padding: 2px;
   font: "proxima-nova";
+  font-size: 12px;
   border: 0px;
   border-radius: 2px; }
-
-/*# sourceMappingURL=styles.css.map */

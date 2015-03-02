@@ -69,12 +69,7 @@ input#time-traveler {
 		font-size: 11px;
 		font-weight: 100;
 	}
-	&::after {
-		content: "Past";
-		margin: -10px;
-		font-size: 11px;
-		font-weight: 100;
-	}
+	
 }
 
 
@@ -129,7 +124,8 @@ div.tooltip {
   width: 60px;	
   height: 28px;		
   padding: 2px;	
-  font: $proxima-nova;		
+  font: $proxima-nova;
+	font-size: 12px;
   border: 0px;					
   border-radius: 2px;
 	

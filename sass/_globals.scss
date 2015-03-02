@@ -6,11 +6,18 @@
 				transition: 0.4s all ease;
 }
 
+html {
+	height: 100%;
+}
+
 
 body {
 	background-color: $black-bg;
 	color: $white;
-	font-family: $proxima-nova;		
+	font-family: $proxima-nova;
+	position: relative;
+	height: 100%;
+
 }
 
 h1,
@@ -84,10 +91,23 @@ h6{
 
 
 #main-dash {
+	height: 100%;
 	padding: 80px 40px;
 	background-color: $dark-black;
+	margin-left: 80px; //offsets sidebar
+	position: relative;
 }
 
+
+
+
+div.selected {
+	display: block !important;
+}
+
+.dash-module-container {
+	display: none;
+}
 
 .dash-module {
 	width: 50%;
