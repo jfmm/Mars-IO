@@ -1,0 +1,40 @@
+/* Nav Sidebar
+===============================*/
+
+aside#sidebar-nav {
+	position: absolute;
+	background-color: $sidebar-black;
+	min-height: 100%;
+	width: 80px;
+}
+
+ul.sidebar-nav-icons {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	text-align: center;
+	& li {
+		font-size: 14px;
+		font-weight: 100;
+		background-color: $sidebar-black;
+		border-right: 2px solid $sidebar-black;
+		padding: 60px 0px;
+	}
+	
+	& li.active {
+		background-color: $dark-black !important;
+		border-right: 2px solid $black-bg;
+	}
+}
+
+.sidebar-icon {
+	fill: #fff;
+	position: relative;
+	width: 80%;
+	height: 70px;
+}
+
+
+.active-icon {
+	fill: $mars-orange;
+}
