@@ -29,6 +29,10 @@ h6 {
   text-transform: uppercase;
   letter-spacing: 4px; }
 
+p {
+  font-weight: 100;
+  max-width: 500px; }
+
 .clearfix:before,
 .clearfix:after {
   content: " ";
@@ -100,7 +104,8 @@ ul.sidebar-nav-icons {
     font-weight: 100;
     background-color: #131313;
     border-right: 2px solid #131313;
-    padding: 60px 0px; }
+    padding: 60px 0px;
+    cursor: pointer; }
   ul.sidebar-nav-icons li.active {
     background-color: #16161a !important;
     border-right: 2px solid #1b1b1f; }

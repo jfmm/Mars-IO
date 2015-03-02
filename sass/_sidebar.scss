@@ -19,6 +19,7 @@ ul.sidebar-nav-icons {
 		background-color: $sidebar-black;
 		border-right: 2px solid $sidebar-black;
 		padding: 60px 0px;
+		cursor: pointer;
 	}
 	
 	& li.active {
