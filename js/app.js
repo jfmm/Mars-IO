@@ -52,11 +52,14 @@ var storedFahrenheitTemperatureArchive;
 			jsonReportLatest = data.report;			
 			updatedOn = data.report.terrestrial_date;
 			sol = data.report.sol;
+			solarLongitue = data.report.ls;
 			minTemp = data.report.min_temp; // in celsius
 			maxTemp = data.report.max_temp; // in celsius
 			minTempF = data.report.min_temp_fahrenheit;
 			maxTempF = data.report.max_temp_fahrenheit;
 			condition = data.report.atmo_opacity; // always sunny, apparently...
+			season = data.report.season;
+			
 			
 			
 			// cache latest report in local storage
@@ -73,7 +76,7 @@ var storedFahrenheitTemperatureArchive;
 			//update information
 			var today = new Date();
 			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
-			var days = Math.floor(diff / 86400000); // convert do days
+			var days = Math.floor(diff / 86400000); // convert to days
 			
 			//Create "days since update" message
 			switch(days) {
@@ -93,7 +96,11 @@ var storedFahrenheitTemperatureArchive;
 			// append temperature readings in fahrenheit by default
 			maxTempContainer.text(maxTempF).append('<sup>&deg;</sup>');
 			minTempContainer.text(minTempF).append('<sup>&deg;</sup>');
-
+			
+			// append orbital data to orbit module
+			$('.sol-num').text(sol + days); // add days to offset delay in data reception
+			$('.ls-num').text(solarLongitue).append('<sup>&deg;</sup>');
+			$('.mars-month').text(season);
 		}
 	
 		
