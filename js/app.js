@@ -3,26 +3,32 @@ var jsonReportLatest,
 		sol,
 		solarLongitue,
 		updatedOn, 
-		sol, 
+		sol, // a sol is a martian day
 		minTemp, 
 		maxTemp, 
 		minTempF, 
 		maxTempF,
 		pressure,
-		season,
+		monthNumber,
 		sunrise,
 		sunset,
 		condition; 
 
-// D3.js arrays for archival datasets
+
+// D3.js data set global vars
 var celsiusTemperatureArchive = []; 
 var fahrenheitTemperatureArchive = [];
-
 var archivePage;
 var archivePageKey;
 
-var storedCelsiusTemperatureArchive; 
-var storedFahrenheitTemperatureArchive;
+
+// Orbit and time calculation global variables
+var SOL_CURIOSITY_LANDED = 319; // this is a constant value
+var MARS_YEAR_LENGTH = 668.6 // this is also a constant
+var solsSinceCuriosityLanded;
+var currentSol; //current day number out of the 668.6 days
+ 
+
 
 
 (function ($) {
@@ -34,8 +40,6 @@ var storedFahrenheitTemperatureArchive;
 	var minTempContainer = $('.temp-min > span');
 	var updateInfo = $('.update-info');
 	
-	
-
 
 	// load latest data on load
 	$('document').ready(getLatestMarsWeather);
@@ -58,7 +62,7 @@ var storedFahrenheitTemperatureArchive;
 			minTempF = data.report.min_temp_fahrenheit;
 			maxTempF = data.report.max_temp_fahrenheit;
 			condition = data.report.atmo_opacity; // always sunny, apparently...
-			season = data.report.season;
+			monthNumber = data.report.season;
 			
 			
 			
@@ -77,10 +81,13 @@ var storedFahrenheitTemperatureArchive;
 			var today = new Date();
 			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
 			var days = Math.floor(diff / 86400000); // convert to days
-			var earthYears = (sol / 365).toFixed(2);
-			var marsYears = (sol / 668.6).toFixed(2);
+			var earthYears = (sol / 365).toFixed(2); // computes how many Earth years since rover landed
+			var marsYears = (sol / MARS_YEAR_LENGTH).toFixed(2); // computes how many Martian years since rover landed
 			
-			console.log(marsYears);
+			
+			solsSinceCuriosityLanded = sol + days; // this offsets the latency of data received by adding the days since we last got data
+			currentSol = solsSinceCuriosityLanded + SOL_CURIOSITY_LANDED - MARS_YEAR_LENGTH; // get the current day of mars
+			
 			
 			//Create "days since update" message
 			switch(days) {
@@ -102,10 +109,31 @@ var storedFahrenheitTemperatureArchive;
 			minTempContainer.text(minTempF).append('<sup>&deg;</sup>');
 			
 			// append orbital data to orbit module
-			$('.sol-num').text(sol + days); // add days to offset delay in data reception
+			$('.sol-num').text(solsSinceCuriosityLanded); 
 			$('.year-count').text(earthYears + "Earth Years - " + marsYears + " Mars Years")
 			$('.ls-num').text(solarLongitue).append('<sup>&deg;</sup>');
-			$('.mars-month').text(season);
+			$('.mars-month').text(monthNumber);
+			
+			
+			// Output Mars Season
+			// Range values provided by http://www-mars.lmd.jussieu.fr/mars/time/solar_longitude.html
+			
+			if(currentSol >= 0 && currentSol <= 257.8)
+				var season = "Spring in Northern Hemisphere - Dust Storm Season Ends";
+			
+			else if (currentSol > 257.8 && currentSol <= 421.6)
+				var season = "Summer in Northern Hemisphere";
+			
+			else if (currentSol > 421.6 && currentSol <= 562.0 )
+				var season = "Autumn in Northen Hemisphere - Dust Storm Season";
+			
+			else if (currentSol > 562.0 && currentSol <= MARS_YEAR_LENGTH)
+				var season = "Winter in Northen Hemisphere - Dust Storm Season"
+			
+			
+			// output season data
+			$('.mars-season').text(season);
+			
 		}
 	
 		
@@ -539,7 +567,7 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 	// draw the max temp dots	+ tooltips
 	svg.selectAll("dot")									
 		.data(data)											
-	.enter().append("circle")
+		.enter().append("circle")
 		.attr("class", "max-temp-chart-circle")
 		.attr("r", 5)	
 		.attr("cx", function(d) { return x(d.date); })		 
@@ -605,6 +633,7 @@ function drawSpaceTime() {
 	var svg = spacetime.append("svg")
 		.attr("width", width)
 		.attr("height", height)
+		.attr("id", "spacetime")
 		.append("g")
 			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
@@ -619,7 +648,7 @@ function drawSpaceTime() {
 		.attr("class", "earthOrbit")
 		.attr("r", radii.earthOrbit)
 		.style("fill", "none")
-		.style("stroke", "rgba(255, 204, 0, 0.25)");
+		.style("stroke", "rgba(195, 212, 237, 0.22)");
 
 	// Current position of Earth in its orbit
 	earthOrbitPosition = d3.svg.arc()
@@ -630,7 +659,7 @@ function drawSpaceTime() {
 	svg.append("path")
 		.attr("class", "earthOrbitPosition")
 		.attr("d", earthOrbitPosition)
-		.style("fill", "rgba(255, 204, 0, 0.75)");
+		.style("fill", "rgb(30, 151, 239)");
 
 	// Earth
 	svg.append("circle")
@@ -678,32 +707,46 @@ function drawSpaceTime() {
 		.attr("transform", "translate(0," + -radii.marsOrbit + ")")
 		.style("fill", "#E95124");
 
+
+
 }
 
 
-
-
 // Update the clock every second
-setInterval(function () {
+function movePlanets(sol) {
   
 	now = new Date();
   
-  var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * d3.time.hours(d3.time.year.floor(now), now).length / d3.time.hours(d3.time.year.floor(now), d3.time.year.ceil(now)).length)); //the length of hours from start of earth year and today / number of hours between today and the end of the year
+	// if a particular sol is passed in by the slider we used that
+	if (sol) {
+		
+		var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * (sol / 365))); 
 
+		var interpolateMarsOrbitPosition = d3.interpolate(marsOrbitPosition.endAngle()(), (2 * Math.PI * ( sol / MARS_YEAR_LENGTH ))); // find the ratio between current day and year
 	
-	var interpolateMarsOrbitPosition = d3.interpolate(marsOrbitPosition.endAngle()(), (2 * Math.PI * (560 / 668.6) ));
+	} 
+
+	else { 	// else we use the current position of the planets
+		
+		var currentEarthYear = now.getFullYear();
+		var daysSinceJanFirst = d3.time.days(new Date('01-01-' + currentEarthYear), now).length;
+
+		var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * (daysSinceJanFirst / 365))); 
+		
+		var interpolateMarsOrbitPosition = d3.interpolate(marsOrbitPosition.endAngle()(), (2 * Math.PI * ( currentSol / MARS_YEAR_LENGTH ))); // find the ratio between current day and year
+	}
   
- 
-  
-  
+	
+	/* Animate the planets to their current poisition in space time
+	==============================================================*/
   d3.transition().tween("orbit", function () {
     return function (t) {
-      // Animate Earth orbit position
+      
+			// Animate Earth orbit position
       d3.select(".earthOrbitPosition").attr("d", earthOrbitPosition.endAngle(interpolateEarthOrbitPosition(t)));
 
       // Transition Earth
-      d3.select(".earth")
-        .attr("transform", "translate(" + radii.earthOrbit * Math.sin(interpolateEarthOrbitPosition(t) - earthOrbitPosition.startAngle()()) + "," + -radii.earthOrbit * Math.cos(interpolateEarthOrbitPosition(t) - earthOrbitPosition.startAngle()()) + ")");
+      d3.select(".earth").attr("transform", "translate(" + radii.earthOrbit * Math.sin(interpolateEarthOrbitPosition(t) - earthOrbitPosition.startAngle()()) + "," + -radii.earthOrbit * Math.cos(interpolateEarthOrbitPosition(t) - earthOrbitPosition.startAngle()()) + ")");
 			
 			
 			
@@ -711,8 +754,7 @@ setInterval(function () {
 			 d3.select(".marsOrbitPosition").attr("d", marsOrbitPosition.endAngle(interpolateMarsOrbitPosition(t)));
 			
 			// transition Mars
-			d3.select('.mars')
-				.attr("transform",  "translate(" + radii.marsOrbit * Math.sin(interpolateMarsOrbitPosition(t) - marsOrbitPosition.startAngle()()) + "," + -radii.marsOrbit * Math.cos(interpolateMarsOrbitPosition(t) - marsOrbitPosition.startAngle()()) + ")");
+			d3.select('.mars').attr("transform",  "translate(" + radii.marsOrbit * Math.sin(interpolateMarsOrbitPosition(t) - marsOrbitPosition.startAngle()()) + "," + -radii.marsOrbit * Math.cos(interpolateMarsOrbitPosition(t) - marsOrbitPosition.startAngle()()) + ")");
 			
 
  
@@ -720,7 +762,36 @@ setInterval(function () {
   });
 
 
-}, 1000);
+}
+
+setTimeout(movePlanets, 1500);
 
 
 drawSpaceTime();
+
+
+
+
+
+
+
+(function($){
+
+$('#orbit-traveler').on("input", function(){
+	movePlanets(this.value);
+	
+	$('.orbit-legend').text("Sol# " + this.value);
+
+	
+		
+	
+	
+});
+
+
+
+})(jQuery);
+
+
+
+

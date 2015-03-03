@@ -219,3 +219,9 @@ div.tooltip {
   font-size: 12px;
   border: 0px;
   border-radius: 2px; }
+
+/* Orbit Module Styles
+=====================*/
+#spacetime {
+  display: block;
+  margin: 0px auto; }
