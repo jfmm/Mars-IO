@@ -77,6 +77,10 @@ var storedFahrenheitTemperatureArchive;
 			var today = new Date();
 			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
 			var days = Math.floor(diff / 86400000); // convert to days
+			var earthYears = (sol / 365).toFixed(2);
+			var marsYears = (sol / 668.6).toFixed(2);
+			
+			console.log(marsYears);
 			
 			//Create "days since update" message
 			switch(days) {
@@ -99,6 +103,7 @@ var storedFahrenheitTemperatureArchive;
 			
 			// append orbital data to orbit module
 			$('.sol-num').text(sol + days); // add days to offset delay in data reception
+			$('.year-count').text(earthYears + "Earth Years - " + marsYears + " Mars Years")
 			$('.ls-num').text(solarLongitue).append('<sup>&deg;</sup>');
 			$('.mars-month').text(season);
 		}
