@@ -274,6 +274,13 @@ var storedFahrenheitTemperatureArchive;
 	
 	
 	
+	/*==================================== 
+		jQuery UI Code
+	================================**/
+	
+	
+	
+	
 	/* Temperature values TOGGLE
 	===============================**/
 	
@@ -345,27 +352,27 @@ var storedFahrenheitTemperatureArchive;
 				});
 		
 		
-		var activeLink = $("li[class='active']");
-		var sidebarlink = $(".sidebar-nav-icons > li");
-		
-		sidebarlink.on('click', function() {
-			var clickedButton = $(this);
-				if(clickedButton.hasClass('active')) {
-					return false;
-				}
-						
-				else {
-						clickedButton.siblings('li').removeClass('active');
-						clickedButton.addClass('active');
-						
-				}
-						
-		});
+			var activeLink = $("li[class='active']");
+			var sidebarlink = $(".sidebar-nav-icons > li");
+
+			sidebarlink.on('click', function() {
+				var clickedButton = $(this);
+					if(clickedButton.hasClass('active')) {
+						return false;
+					}
+
+					else {
+							clickedButton.siblings('li').removeClass('active');
+							clickedButton.addClass('active');
+
+					}
+
+			});
 	
 
 
 
-})(jQuery); // end module
+})(jQuery); // end JQUERY module
 
 
 
@@ -649,7 +656,6 @@ function drawSpaceTime() {
 		.endAngle(0);
 	svg.append("path")
 		.attr("class", "marsOrbitPosition")
-		//.attr("d", marsOrbitPosition(now))
 		.attr("d", marsOrbitPosition)
 		.style("fill", "rgba(255, 37, 37, 0.75)");
 
@@ -667,15 +673,15 @@ function drawSpaceTime() {
 
 // Update the clock every second
 setInterval(function () {
-  now = new Date();
+  
+	now = new Date();
   
   var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * d3.time.hours(d3.time.year.floor(now), now).length / d3.time.hours(d3.time.year.floor(now), d3.time.year.ceil(now)).length)); //the length of hours from start of earth year and today / number of hours between today and the end of the year
+
 	
-	console.log(d3.time.hours(d3.time.year.floor(now), d3.time.year.ceil(now)).length);
-	
-	var interpolateMarsOrbitPosition = d3.interpolate(marsOrbitPosition.endAngle()(), (2 * Math.PI * (1500 / 2000) ));
+	var interpolateMarsOrbitPosition = d3.interpolate(marsOrbitPosition.endAngle()(), (2 * Math.PI * (560 / 668.6) ));
   
-  //var interpolateDay = d3.interpolate(day.endAngle()(), (2 * Math.PI * d3.time.seconds(d3.time.day.floor(now), now).length / d3.time.seconds(d3.time.day.floor(now), d3.time.day.ceil(now)).length));
+ 
   
   
   d3.transition().tween("orbit", function () {
@@ -697,12 +703,6 @@ setInterval(function () {
 				.attr("transform",  "translate(" + radii.marsOrbit * Math.sin(interpolateMarsOrbitPosition(t) - marsOrbitPosition.startAngle()()) + "," + -radii.marsOrbit * Math.cos(interpolateMarsOrbitPosition(t) - marsOrbitPosition.startAngle()()) + ")");
 			
 
-//      // Animate day
-//      // Transition day
-//      d3.select(".day")
-//        .attr("d", day.endAngle(interpolateDay(t)))
-//        .attr("transform", "translate(" + radii.earthOrbit * Math.sin(interpolateEarthOrbitPosition(t) - earthOrbitPosition.startAngle()()) + "," + -radii.earthOrbit * Math.cos(interpolateEarthOrbitPosition(t) - earthOrbitPosition.startAngle()()) + ")");
-      
  
     };
   });
