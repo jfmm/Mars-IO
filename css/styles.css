@@ -81,6 +81,10 @@ div.selected {
 #reset, #current {
   width: 25% !important; }
 
+.dash-module svg {
+  display: block;
+  margin: 0px auto; }
+
 /* UTILITY CLASSES
 ==============================*/
 .container {
@@ -229,5 +233,20 @@ div.tooltip {
   display: block;
   margin: 0px auto; }
 
+#orbit-traveler {
+  width: 50%; }
+
 .orbit-btns {
   margin-top: 30px; }
+
+.winter {
+  color: aquamarine !important; }
+
+.summer {
+  color: yellow !important; }
+
+.spring {
+  color: greenyellow; }
+
+.autumn {
+  color: brown; }

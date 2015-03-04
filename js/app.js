@@ -80,8 +80,8 @@ var currentSol; //current day number out of the 668.6 days
 			var today = new Date();
 			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
 			var days = Math.floor(diff / 86400000); // convert to days
-			var earthYears = (sol / 365).toFixed(2); // computes how many Earth years since rover landed
-			var marsYears = (sol / MARS_YEAR_LENGTH).toFixed(2); // computes how many Martian years since rover landed
+			var earthYears = ((sol + (sol * 0.022)) / 365).toFixed(1); // computes how many Earth years since rover landed
+			var marsYears = (sol / MARS_YEAR_LENGTH).toFixed(1); // computes how many Martian years since rover landed
 			
 			
 			solsSinceCuriosityLanded = sol + days; // this offsets the latency of data received by adding the days since we last got data
@@ -109,7 +109,7 @@ var currentSol; //current day number out of the 668.6 days
 			
 			// append orbital data to orbit module
 			$('.sol-total').text(solsSinceCuriosityLanded); 
-			$('.year-count').text(earthYears + "Earth Years - " + marsYears + " Mars Years")
+			$('.year-count').text(earthYears + " Earth Years - " + marsYears + " Mars Years");
 			$('.ls-num').text(solarLongitue).append('<sup>&deg;</sup>');
 			$('.sol-num').text(Math.round(currentSol));// round it for simplicity
 			$('.mars-month').text(computeMonthNumber(currentSol));
@@ -376,22 +376,7 @@ var currentSol; //current day number out of the 668.6 days
 				});
 		
 		
-			var activeLink = $("li[class='active']");
-			var sidebarlink = $(".sidebar-nav-icons > li");
-
-			sidebarlink.on('click', function() {
-				var clickedButton = $(this);
-					if(clickedButton.hasClass('active')) {
-						return false;
-					}
-
-					else {
-							clickedButton.siblings('li').removeClass('active');
-							clickedButton.addClass('active');
-
-					}
-
-			});
+		
 	
 
 
@@ -588,8 +573,8 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 
 
 
-/**=------------------------------------------
-*	ORBIT VIZUALIZATIO CODE
+/*------------------------------------------
+*	ORBIT VIZUALIZATION CODE
 *-------------------------------------------*/
 
 
@@ -699,6 +684,8 @@ function drawSpaceTime() {
 }
 
 
+/* Calculate Position and Animate Planet and Orbits
+====================================================*/
 function movePlanets(sol) {
   
 	now = new Date();
@@ -762,13 +749,25 @@ drawSpaceTime();
 
 
 
+/* =============================================
+ * Mars-IO: User Interface Event handler Code
+ * jQuery Module
+ * =============================================*/
+
 
 (function($){
+	
+var orbitLegend = $('.orbit-legend'),
+		orbitSlider = $('#orbit-traveler'),
+		solNum = $('.sol-num'),
+		marsSeason = $('.mars-season'),
+		marsMonth = 	$('.mars-month'),
+		solTotal = $('.sol-total');
 
 
 /* Event Handlers for Orbit Module Slider
 ============================================*/
-$('#orbit-traveler').on("input", function(){
+orbitSlider.on("input", function(){
 	
 	var sol = this.value;
 	
@@ -776,20 +775,16 @@ $('#orbit-traveler').on("input", function(){
 	movePlanets(sol);
 	
 	// change sol# as input slides
-	$('.orbit-legend').text("Sol# " + sol);
+	orbitLegend.text("Sol# " + sol);
+	solNum.text(sol);
 	
 	//change season as input slides
-	$('.mars-season').text(computeSeason(sol));
-	$('.mars-month').text(computeMonthNumber(sol));
+	marsSeason.text(computeSeason(sol));
+	marsMonth.text(computeMonthNumber(sol));
+
 	
-	if(sol >= solsSinceCuriosityLanded)
-		console.log(--solsSinceCuriosityLanded);
-	else
-		console.log(++solsSinceCuriosityLanded)
-	
-	
-		
-	computeLS();	
+	console.log(++solsSinceCuriosityLanded + (MARS_YEAR_LENGTH - currentSol));
+
 		
 });
 
@@ -800,14 +795,60 @@ $('#orbit-traveler').on("input", function(){
 	
 	$('#reset').on('click', function (){ 
 		movePlanets(1); 
-		$('.orbit-legend').text("Planets at position 0");
+		orbitLegend.text("Planets at position 0");
+		orbitSlider.val(0);
+		solNum.text(0);
+		marsMonth.text(computeMonthNumber(0));
+		marsSeason.text(computeSeason(1));
+		
 	});
 	
 	$('#current').on('click', function () {
-		movePlanets(); 
-		$('.orbit-legend').text("Current Orbit Position in Time");
+		
+		movePlanets(); // move planet to current time
+		orbitLegend.text("Current Orbit Position in Time"); // change legend
+		orbitSlider.val(Math.round(currentSol)); // set slider back to current time
+		solNum.text(Math.round(currentSol)); // change sol num
+		marsMonth.text(computeMonthNumber(currentSol)); //update month
+		marsSeason.text(computeSeason(currentSol));
+	
 	
 	});
+	
+	
+	
+	/* Event Handlers for sidebar Navigation
+	============================================*/
+	
+		var activeLink = $("li[class='active']");
+		var sidebarlink = $(".sidebar-nav-icons > li");
+	
+
+			sidebarlink.on('click', function() {
+				var clickedButton = $(this);
+				var mod = clickedButton.data("module");
+				var selectedModule = $('div[class~="selected"]');
+	
+			  selectedModule.removeClass("selected").siblings().addClass("selected");
+				
+				if(mod === "orbit") {
+					movePlanets(1);
+					setTimeout(function(){
+						movePlanets();
+					}, 1200);
+				}
+			
+				
+				
+					// toggle button styles
+					if(clickedButton.hasClass('active')) {
+						return false;
+					} else {
+							clickedButton.siblings('li').removeClass('active');
+							clickedButton.addClass('active');
+					}
+
+			});
 	
 })(jQuery);
 
@@ -815,22 +856,29 @@ $('#orbit-traveler').on("input", function(){
 
 
 
-// Output Mars Season & Month functions
-// Range values provided by http://www-mars.lmd.jussieu.fr/mars/time/solar_longitude.html
+
+
+
+/* ======================================================================================
+ * Mars-IO: Utility Functions for Dynamic Computations
+ * Range values provided by http://www-mars.lmd.jussieu.fr/mars/time/solar_longitude.html
+ * =======================================================================================*/
+
+
 function computeSeason(currentSol) {
 	
 	var season;
 	
-	if(currentSol >= 0 && currentSol <= 257.8)
+	if(currentSol >= 0 && currentSol <= 193.3)
 		season = "Spring in N. Hemisphere - Dust Storm Season Ends";
 
-	else if (currentSol > 257.8 && currentSol <= 421.6)
+	else if (currentSol > 193.3 && currentSol <= 371.9)
 		season = "Summer in N. Hemisphere";
 
-	else if (currentSol > 421.6 && currentSol <= 562.0 )
+	else if (currentSol > 371.9 && currentSol <= 514.6 )
 		season = "Autumn in N. Hemisphere - Dust Storm Season";
 
-	else if (currentSol > 562.0 && currentSol <= MARS_YEAR_LENGTH)
+	else if (currentSol > 514.6 && currentSol <= MARS_YEAR_LENGTH)
 		season = "Winter in N. Hemisphere - Dust Storm Season";
 	
 	
@@ -891,6 +939,9 @@ function computeLS(){
 
 	console.log(solarLongitue.toFixed(2));
 }
+
+
+
 
 
 
