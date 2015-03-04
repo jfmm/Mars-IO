@@ -929,12 +929,6 @@ function computeMonthNumber(currentSol) {
 }
 
 
-function computeLS(){
-	
-	solarLongitue+= 0.6
-
-	console.log(solarLongitue.toFixed(2));
-}
 
 
 

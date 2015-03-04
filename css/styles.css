@@ -85,6 +85,9 @@ div.selected {
   display: block;
   margin: 0px auto; }
 
+footer {
+  text-align: center; }
+
 /* UTILITY CLASSES
 ==============================*/
 .container {
