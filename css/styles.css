@@ -78,6 +78,9 @@ div.selected {
 .module-heading {
   font-weight: normal; }
 
+#reset, #current {
+  width: 25% !important; }
+
 /* UTILITY CLASSES
 ==============================*/
 .container {
@@ -121,14 +124,14 @@ ul.sidebar-nav-icons {
 
 /* TEMPERATURE MODULE
 ===========================*/
-button.unit-toggle {
+button.unit-toggle, button#reset, button#current {
   color: white;
   background-color: #16161a;
   border: solid 1px #313137;
   padding: 5px;
   border-radius: 2px;
   width: 10%; }
-  button.unit-toggle:focus {
+  button.unit-toggle:focus, button#reset:focus, button#current:focus {
     outline: none; }
 
 .button-group-right {
@@ -225,3 +228,6 @@ div.tooltip {
 #spacetime {
   display: block;
   margin: 0px auto; }
+
+.orbit-btns {
+  margin-top: 30px; }

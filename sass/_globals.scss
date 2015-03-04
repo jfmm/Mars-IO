@@ -104,6 +104,12 @@ div.selected {
 }
 
 
+#reset, #current {
+	@extend .unit-toggle;
+	width: 25% !important;
+}
+
+
 
 
 
