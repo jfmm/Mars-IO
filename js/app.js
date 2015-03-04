@@ -22,12 +22,12 @@ var archivePage;
 var archivePageKey;
 
 
-// Orbit and time calculation global variables
+// Orbit and time calculation global variables AND CONSTANTS
 var SOL_CURIOSITY_LANDED = 319; // this is a constant value
 var MARS_YEAR_LENGTH = 668.6 // this is also a constant
 var solsSinceCuriosityLanded;
 var currentSol; //current day number out of the 668.6 days
- 
+
 
 
 
@@ -80,7 +80,7 @@ var currentSol; //current day number out of the 668.6 days
 			var today = new Date();
 			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
 			var days = Math.floor(diff / 86400000); // convert to days
-			var earthYears = ((sol + (sol * 0.022)) / 365).toFixed(1); // computes how many Earth years since rover landed
+			var earthYears = ((sol + (sol * 0.040)) / 365).toFixed(1); // computes how many Earth years since rover landed
 			var marsYears = (sol / MARS_YEAR_LENGTH).toFixed(1); // computes how many Martian years since rover landed
 			
 			
@@ -113,7 +113,8 @@ var currentSol; //current day number out of the 668.6 days
 			$('.ls-num').text(solarLongitue).append('<sup>&deg;</sup>');
 			$('.sol-num').text(Math.round(currentSol));// round it for simplicity
 			$('.mars-month').text(computeMonthNumber(currentSol));
-			
+			$('.earth-month').text(computeEarthMonth(daysSinceJanFirst));
+
 			// output season data
 			$('.mars-season').text(computeSeason(currentSol));
 			$('#orbit-traveler').val(currentSol); // sets value of slider to current sol number
@@ -582,11 +583,14 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 var earthOrbitPosition, 
 		marsOrbitPosition, 
 		day, 
-		radii;
+		radii,
+		now,
+		currentEarthYear = new Date().getFullYear(),
+		daysSinceJanFirst = d3.time.days(new Date('01-01-' + currentEarthYear), new Date()).length; console.log(currentEarthYear + " " + daysSinceJanFirst);
 
 function drawSpaceTime() {
 
-	var now = new Date(d3.time.year.floor(new Date()));
+	now = new Date(d3.time.year.floor(new Date()));
 
 	var spacetime = d3.select('#spacetime-wrap');
 	var width = 500,
@@ -693,7 +697,8 @@ function movePlanets(sol) {
 	// if a particular sol is passed in by the slider
 	if (sol) {
 		
-		var duration = 0; // make animation much faster with slider input
+		var duration = 0; // animate without delays
+
 		
 		// use output value of slider to adjust the position of the planets
 		var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * (sol / 365))); 
@@ -703,9 +708,11 @@ function movePlanets(sol) {
 
 	else { 	// else we use the position of the planets in current time
 		
-		var duration = 800;
-		var currentEarthYear = now.getFullYear();
-		var daysSinceJanFirst = d3.time.days(new Date('01-01-' + currentEarthYear), now).length;
+		var duration = 800; // ease-in to position
+		currentEarthYear = now.getFullYear();
+		daysSinceJanFirst = d3.time.days(new Date('01-01-' + currentEarthYear), now).length;
+		var ep = 2 * Math.PI * (daysSinceJanFirst / 365);
+		var mp = 2 * Math.PI * ( currentSol / MARS_YEAR_LENGTH );
 
 		var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * (daysSinceJanFirst / 365))); 
 		
@@ -713,12 +720,14 @@ function movePlanets(sol) {
 	}
   
 	
+	
+	
 	/* Animate the planets to their current poisition in space time*/
   d3.transition().duration(duration).tween("orbit", function () {
     return function (t) {
-      
+     	
 			// Animate Earth orbit position
-      d3.select(".earthOrbitPosition").attr("d", earthOrbitPosition.endAngle(interpolateEarthOrbitPosition(t)));
+     d3.select(".earthOrbitPosition").attr("d", earthOrbitPosition.endAngle(interpolateEarthOrbitPosition(t)));
 
       // Transition Earth
       d3.select(".earth").attr("transform", "translate(" + radii.earthOrbit * Math.sin(interpolateEarthOrbitPosition(t) - earthOrbitPosition.startAngle()()) + "," + -radii.earthOrbit * Math.cos(interpolateEarthOrbitPosition(t) - earthOrbitPosition.startAngle()()) + ")");
@@ -759,7 +768,9 @@ var orbitLegend = $('.orbit-legend'),
 		solNum = $('.sol-num'),
 		marsSeason = $('.mars-season'),
 		marsMonth = 	$('.mars-month'),
-		solTotal = $('.sol-total');
+		solTotal = $('.sol-total'),
+		earthMonth = $('.earth-month'),
+		day;
 
 
 /* Event Handlers for Orbit Module Slider
@@ -767,6 +778,15 @@ var orbitLegend = $('.orbit-legend'),
 orbitSlider.on("input", function(){
 	
 	var sol = this.value;
+	
+	// reset month count after first earth complete year
+	if(sol <= 365)
+		day = sol;
+	else
+		day = sol - 365;
+		
+
+	
 	
 	// move the planets to the specified sol position
 	movePlanets(sol);
@@ -778,10 +798,11 @@ orbitSlider.on("input", function(){
 	//change season as input slides
 	marsSeason.text(computeSeason(sol));
 	marsMonth.text(computeMonthNumber(sol));
-
 	
-	console.log(++solsSinceCuriosityLanded + (MARS_YEAR_LENGTH - currentSol));
-
+	// change earth month as input slides
+	earthMonth.text(computeEarthMonth(day));
+	
+  
 		
 });
 
@@ -797,6 +818,7 @@ orbitSlider.on("input", function(){
 		solNum.text(0);
 		marsMonth.text(computeMonthNumber(0));
 		marsSeason.text(computeSeason(1));
+		earthMonth.text(computeEarthMonth(1));
 		
 	});
 	
@@ -808,7 +830,9 @@ orbitSlider.on("input", function(){
 		solNum.text(Math.round(currentSol)); // change sol num
 		marsMonth.text(computeMonthNumber(currentSol)); //update month
 		marsSeason.text(computeSeason(currentSol));
-	
+		earthMonth.text(computeEarthMonth(daysSinceJanFirst));
+		
+		console.log(computeEarthMonth(daysSinceJanFirst));
 	
 	});
 	
@@ -821,31 +845,31 @@ orbitSlider.on("input", function(){
 		var sidebarlink = $(".sidebar-nav-icons > li");
 	
 
-			sidebarlink.on('click', function() {
-				var clickedButton = $(this);
-				var mod = clickedButton.data("module");
-				var selectedModule = $('div[class~="selected"]');
-	
-			  selectedModule.removeClass("selected").siblings().addClass("selected");
-				
-				
-				
-				// animate planets when orbit module first comes into view
-				if(mod === "orbit") setTimeout(movePlanets, 900);
-				
-			
-				
-				
-					// toggle button styles
-					if(clickedButton.hasClass('active')) {
-						return false;
-					} else {
-							clickedButton.siblings('li').removeClass('active');
-							clickedButton.addClass('active');
-					}
+		sidebarlink.on('click', function() {
+			var clickedButton = $(this);
+			var mod = clickedButton.data("module");
+			var selectedModule = $('div[class~="selected"]');
 
-			});
-	
+			selectedModule.removeClass("selected").siblings().addClass("selected");
+
+
+
+			// animate planets when orbit module first comes into view
+			if(mod === "orbit") setTimeout(movePlanets, 900);
+
+
+
+
+				// toggle button styles
+				if(clickedButton.hasClass('active')) {
+					return false;
+				} else {
+						clickedButton.siblings('li').removeClass('active');
+						clickedButton.addClass('active');
+				}
+
+		});
+
 })(jQuery);
 
 
@@ -855,10 +879,10 @@ orbitSlider.on("input", function(){
 
 
 
-/* ======================================================================================
+/* ===================================================================================================
  * Mars-IO: Utility Functions for Dynamic Computations
- * Range values provided by http://www-mars.lmd.jussieu.fr/mars/time/solar_longitude.html
- * =======================================================================================*/
+ * Martian Month Range values provided by http://www-mars.lmd.jussieu.fr/mars/time/solar_longitude.html
+ * ==================================================================================================*/
 
 
 function computeSeason(currentSol) {
@@ -931,10 +955,76 @@ function computeMonthNumber(currentSol) {
 
 
 
+// return the amount of days a particular month has in a particular year
+function daysInMonth(month,year) {
+    return new Date(year, month, 0).getDate();
+}
 
 
+//populate an array of number of days elapsed with each month
+// to be used as the ranges when computing the Earth Months dynamically
+var dayRange= [];
+var prevMonthLenth = 0;
+	
+for(var i =1; i <= 12; i++) {
+		
+		// get the number of days for the month number passed in
+		var monthLen = daysInMonth(i, currentEarthYear); 
+		
+		// add the previouse month num of days to the current month in the lop
+		dayRange.push(monthLen + prevMonthLenth);
+		
+		// update variable with the sum of the last sum
+		prevMonthLenth += monthLen;
+
+	}
+	
 
 
+// Compute earth month days dynamically
 
+function computeEarthMonth(day) {
+
+	var month;
+	
+	if (day >= 0 && day <= dayRange[0])
+		month = "1";
+	
+	else if (day > dayRange[0] && day <= dayRange[1])
+		month = "2";
+	
+	else if (day > dayRange[1] && day <= dayRange[2])
+		month = "3";
+	
+	else if (day > dayRange[2] && day <= dayRange[3])
+		month = "4";
+	
+	else if (day > dayRange[3] && day <= dayRange[4])
+		month = "5";
+	
+	else if (day > dayRange[4] && day <= dayRange[5])
+		month = "6";
+	
+	else if (day > dayRange[5] && day <= dayRange[6])
+		month = "7";
+	
+	else if (day > dayRange[6] && day <= dayRange[7])
+		month = "8";
+	
+	else if (day > dayRange[7] && day<= dayRange[8])
+		month = "9";
+	
+	else if (day > dayRange[8] && day <= dayRange[9])
+		month = "10";
+	
+	else if (day > dayRange[9] && day <= dayRange[10])
+		month = "11";
+	
+	else if (day > dayRange[10] && day <= dayRange[11])
+		month = "12";
+	
+	return month;
+	
+}
 
 

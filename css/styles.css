@@ -150,6 +150,11 @@ button.unit-active {
 .temp-module span {
   font-size: 3em; }
 
+aside.update-info {
+  margin-top: 120px;
+  font-size: 13px;
+  font-weight: 100; }
+
 #year-range-wrapper {
   text-align: center; }
 
@@ -253,3 +258,6 @@ div.tooltip {
 
 .autumn {
   color: brown; }
+
+.earth-data {
+  color: #6db6ff; }
