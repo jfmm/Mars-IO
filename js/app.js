@@ -739,9 +739,6 @@ function movePlanets(sol) {
 
 }
 
-setTimeout(movePlanets, 1500);
-
-
 drawSpaceTime();
 
 
@@ -831,12 +828,11 @@ orbitSlider.on("input", function(){
 	
 			  selectedModule.removeClass("selected").siblings().addClass("selected");
 				
-				if(mod === "orbit") {
-					movePlanets(1);
-					setTimeout(function(){
-						movePlanets();
-					}, 1200);
-				}
+				
+				
+				// animate planets when orbit module first comes into view
+				if(mod === "orbit") setTimeout(movePlanets, 900);
+				
 			
 				
 				
