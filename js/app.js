@@ -848,14 +848,30 @@ orbitSlider.on("input", function(){
 		sidebarlink.on('click', function() {
 			var clickedButton = $(this);
 			var mod = clickedButton.data("module");
-			var selectedModule = $('div[class~="selected"]');
+			//var selectedModule = $('div[class~="selected"]');
 
-			selectedModule.removeClass("selected").siblings().addClass("selected");
+			//selectedModule.removeClass("selected").siblings().addClass("selected");
 
 
-
+			switch(mod) {
+				case "sol":
+					// show orbit module
+					$('#sol-module').addClass("selected").siblings().removeClass("selected");
+					// animate planets
+					setTimeout(movePlanets, 900);
+					break;
+				
+				case "temp":
+					// show temp module
+					$('#temp-module').addClass("selected").siblings().removeClass("selected");
+					break;
+				case "about":
+					// show about module
+					$('#about-module').addClass("selected").siblings().removeClass("selected");
+					break;
+			}
 			// animate planets when orbit module first comes into view
-			if(mod === "orbit") setTimeout(movePlanets, 900);
+			//if(mod === "orbit") setTimeout(movePlanets, 900);
 
 
 
