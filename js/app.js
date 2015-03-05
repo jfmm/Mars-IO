@@ -80,12 +80,12 @@ var currentSol; //current day number out of the 668.6 days
 			var today = new Date();
 			var diff = Math.abs(today - new Date(updatedOn)); // compute last update time in miliseconds
 			var days = Math.floor(diff / 86400000); // convert to days
-			var earthYears = ((sol + (sol * 0.040)) / 365).toFixed(1); // computes how many Earth years since rover landed
-			var marsYears = (sol / MARS_YEAR_LENGTH).toFixed(1); // computes how many Martian years since rover landed
 			
-			
+			//these computations are for sol module
 			solsSinceCuriosityLanded = sol + days; // this offsets the latency of data received by adding the days since we last got data
 			currentSol = solsSinceCuriosityLanded + SOL_CURIOSITY_LANDED - MARS_YEAR_LENGTH; // get the current day of mars
+			var earthYears = ((solsSinceCuriosityLanded + (solsSinceCuriosityLanded* 0.040)) / 365).toFixed(1); // computes how many Earth years since rover landed
+			var marsYears = (solsSinceCuriosityLanded / MARS_YEAR_LENGTH).toFixed(1); // computes how many Martian years since rover landed
 			
 			
 			//Create "days since update" message
@@ -692,9 +692,7 @@ function drawSpaceTime() {
 /* Calculate Position and Animate Planet and Orbits
 ====================================================*/
 function movePlanets(sol) {
-  
-	
-  
+
 	// if a particular sol is passed in by the slider
 	if (sol) {
 		
@@ -710,8 +708,6 @@ function movePlanets(sol) {
 	else { 	// else we use the position of the planets in current time
 		
 		var duration = 800; // ease-in to position
-		var ep = 2 * Math.PI * (daysSinceJanFirst / 365);
-		var mp = 2 * Math.PI * ( currentSol / MARS_YEAR_LENGTH );
 
 		var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * (daysSinceJanFirst / 365))); 
 		
@@ -868,10 +864,6 @@ orbitSlider.on("input", function(){
 					$('#about-module').addClass("selected").siblings().removeClass("selected");
 					break;
 			}
-			// animate planets when orbit module first comes into view
-			//if(mod === "orbit") setTimeout(movePlanets, 900);
-
-
 
 
 				// toggle button styles
