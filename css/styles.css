@@ -31,7 +31,10 @@ h6 {
 
 p {
   font-weight: 100;
-  max-width: 500px; }
+  max-width: 500px;
+  line-height: 25px; }
+  p a {
+    color: #e95124; }
 
 .clearfix:before,
 .clearfix:after {

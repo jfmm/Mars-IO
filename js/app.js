@@ -316,11 +316,12 @@ var currentSol; //current day number out of the 668.6 days
 		var unit = this.dataset.unit;
 		var button = $(this);
 	
-
-		
 			
 			if(unit === 'celsius') {
 				
+				
+				// check if the archive page key is defined. 
+				// If it is draw that chart from session storage data
 				if(archivePageKey)
 					drawChart("c", true, archivePage + "c");
 				else
@@ -365,8 +366,8 @@ var currentSol; //current day number out of the 668.6 days
 				
 				$("#time-traveler").on("change", function() {
 					
-					var value = this.value;
-					var page = value / 10;
+			
+					var page = this.value / 10;
 
 					// clear the arrays before loading them with new archive data
 					celsiusTemperatureArchive.length = 0; 
@@ -586,7 +587,7 @@ var earthOrbitPosition,
 		radii,
 		now,
 		currentEarthYear = new Date().getFullYear(),
-		daysSinceJanFirst = d3.time.days(new Date('01-01-' + currentEarthYear), new Date()).length; console.log(currentEarthYear + " " + daysSinceJanFirst);
+		daysSinceJanFirst = d3.time.days(new Date('01-01-' + currentEarthYear), new Date()).length;
 
 function drawSpaceTime() {
 
@@ -692,7 +693,7 @@ function drawSpaceTime() {
 ====================================================*/
 function movePlanets(sol) {
   
-	now = new Date();
+	
   
 	// if a particular sol is passed in by the slider
 	if (sol) {
@@ -709,8 +710,6 @@ function movePlanets(sol) {
 	else { 	// else we use the position of the planets in current time
 		
 		var duration = 800; // ease-in to position
-		currentEarthYear = now.getFullYear();
-		daysSinceJanFirst = d3.time.days(new Date('01-01-' + currentEarthYear), now).length;
 		var ep = 2 * Math.PI * (daysSinceJanFirst / 365);
 		var mp = 2 * Math.PI * ( currentSol / MARS_YEAR_LENGTH );
 
@@ -778,6 +777,7 @@ var orbitLegend = $('.orbit-legend'),
 orbitSlider.on("input", function(){
 	
 	var sol = this.value;
+
 	
 	// reset month count after first earth complete year
 	if(sol <= 365)
@@ -822,8 +822,9 @@ orbitSlider.on("input", function(){
 		
 	});
 	
-	$('#current').on('click', function () {
-		
+	$('#current').on('click', rightNow);
+	
+	function rightNow() {
 		movePlanets(); // move planet to current time
 		orbitLegend.text("Current Orbit Position in Time"); // change legend
 		orbitSlider.val(Math.round(currentSol)); // set slider back to current time
@@ -831,10 +832,7 @@ orbitSlider.on("input", function(){
 		marsMonth.text(computeMonthNumber(currentSol)); //update month
 		marsSeason.text(computeSeason(currentSol));
 		earthMonth.text(computeEarthMonth(daysSinceJanFirst));
-		
-		console.log(computeEarthMonth(daysSinceJanFirst));
-	
-	});
+	}
 	
 	
 	
@@ -857,8 +855,8 @@ orbitSlider.on("input", function(){
 				case "sol":
 					// show orbit module
 					$('#sol-module').addClass("selected").siblings().removeClass("selected");
-					// animate planets
-					setTimeout(movePlanets, 900);
+					// animate planets to current time
+					setTimeout(rightNow, 900);
 					break;
 				
 				case "temp":
