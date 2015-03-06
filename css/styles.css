@@ -37,6 +37,16 @@ p {
   p a {
     color: #e95124; }
 
+a {
+  color: #e95124; }
+  a:visited {
+    color: #e95124; }
+
+li > a {
+  color: #e95124; }
+  li > a:visited {
+    color: #e95124; }
+
 .clearfix:before,
 .clearfix:after {
   content: " ";
@@ -47,6 +57,15 @@ p {
 
 .clearfix {
   *zoom: 1; }
+
+img {
+  max-width: 100%;
+  height: auto; }
+
+#rover-container > img {
+  border-radius: 50%;
+  width: 457px;
+  margin-top: 40px; }
 
 /* Dashboard Styles
 ==============================*/

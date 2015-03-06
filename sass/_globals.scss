@@ -42,6 +42,20 @@ p {
 	}
 }
 
+a {
+	color: $mars-orange;
+	&:visited {
+		color: $mars-orange;
+	}
+}
+
+li > a {
+	color: $mars-orange;
+	&:visited {
+		color: $mars-orange;
+	}
+}
+
 
 .clearfix:before,
 .clearfix:after {
@@ -57,7 +71,16 @@ p {
     *zoom: 1;
 }
 
+img {
+	max-width: 100%;
+	height: auto;
+}
 
+#rover-container > img {
+	border-radius: 50%;
+	width: 457px;
+	margin-top: 40px;
+}
 
 
 /* Dashboard Styles
