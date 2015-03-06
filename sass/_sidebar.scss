@@ -2,7 +2,7 @@
 ===============================*/
 
 aside#sidebar-nav {
-	position: absolute;
+	position: fixed;
 	background-color: $sidebar-black;
 	min-height: 100%;
 	width: 80px;

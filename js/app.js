@@ -896,6 +896,7 @@ drawSpaceTime();
         }
 
     });
+    
 
 })(jQuery);
 
@@ -938,7 +939,7 @@ function computeMonthNumber(currentSol) {
 
     var month;
 
-    if (currentSol >= 0 && currentSol <= 61.2)
+    if (currentSol >= 1 && currentSol <= 61.2)
         month = "1";
 
     else if (currentSol > 61.2 && currentSol <= 126.6)
@@ -1014,7 +1015,7 @@ function computeEarthMonth(day) {
 
     var month;
 
-    if (day >= 0 && day <= dayRange[0])
+    if (day >= 1 && day <= dayRange[0])
         month = "1";
 
     else if (day > dayRange[0] && day <= dayRange[1])
