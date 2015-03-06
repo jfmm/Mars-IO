@@ -55,8 +55,7 @@ p {
   margin-left: 30px; }
 
 .mars-planet {
-  color: #e95124;
-  font-size: 17px; }
+  color: #e95124; }
 
 #main-dash {
   padding: 80px 40px;
@@ -173,10 +172,12 @@ aside.update-info {
   display: none; }
 
 .min-bul {
-  color: #e95124; }
+  color: #e95124;
+  font-size: 28px; }
 
 .max-bul {
-  color: red; }
+  color: red;
+  font-size: 28px; }
 
 .legend {
   display: block;
