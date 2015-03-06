@@ -65,7 +65,8 @@ img {
 #rover-container > img {
   border-radius: 50%;
   width: 457px;
-  margin-top: 40px; }
+  margin: 40px auto 0px;
+  display: block; }
 
 /* Dashboard Styles
 ==============================*/
