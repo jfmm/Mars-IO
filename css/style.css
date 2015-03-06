@@ -1,0 +1,278 @@
+/* COLOR PALETTE
+==============================*/
+/*Typography
+=============================*/
+/* Global Styles
+===============================*/
+* {
+  -webkit-transition: 0.4s all ease;
+  -moz-transition: 0.4s all ease;
+  transition: 0.4s all ease; }
+
+html {
+  height: 100%;
+  min-height: 100%; }
+
+body {
+  background-color: #1b1b1f;
+  color: white;
+  font-family: "proxima-nova";
+  position: relative;
+  height: 100%; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 100;
+  text-transform: uppercase;
+  letter-spacing: 4px; }
+
+p {
+  font-weight: 100;
+  max-width: 500px;
+  line-height: 25px; }
+  p a {
+    color: #e95124; }
+
+a {
+  color: #e95124; }
+  a:visited {
+    color: #e95124; }
+
+li > a {
+  color: #e95124; }
+  li > a:visited {
+    color: #e95124; }
+
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table; }
+
+.clearfix:after {
+  clear: both; }
+
+.clearfix {
+  *zoom: 1; }
+
+/* Dashboard Styles
+==============================*/
+.logo {
+  display: inline-block;
+  margin-left: 30px; }
+
+.mars-planet {
+  color: #e95124; }
+
+#main-dash {
+  padding: 80px 40px;
+  background-color: #16161a;
+  margin-left: 80px;
+  position: relative; }
+
+div.selected {
+  display: block !important; }
+
+.dash-module-container {
+  display: none; }
+
+.dash-module {
+  width: 50%;
+  float: left;
+  display: inline-block; }
+
+.mars-data {
+  color: #e95124; }
+
+.module-heading {
+  font-weight: normal; }
+
+#reset, #current {
+  width: 25% !important; }
+
+.dash-module svg {
+  display: block;
+  margin: 0px auto; }
+
+footer {
+  text-align: center;
+  padding: 40px 0px; }
+
+/* UTILITY CLASSES
+==============================*/
+.container {
+  padding: 20px 40px; }
+
+.error {
+  color: red; }
+
+/* Nav Sidebar
+===============================*/
+aside#sidebar-nav {
+  position: fixed;
+  background-color: #131313;
+  min-height: 100%;
+  width: 80px; }
+
+ul.sidebar-nav-icons {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  text-align: center; }
+  ul.sidebar-nav-icons li {
+    font-size: 14px;
+    font-weight: 100;
+    background-color: #131313;
+    border-right: 2px solid #131313;
+    padding: 60px 0px;
+    cursor: pointer; }
+  ul.sidebar-nav-icons li.active {
+    background-color: #16161a !important;
+    border-right: 2px solid #1b1b1f; }
+
+.sidebar-icon {
+  fill: #fff;
+  position: relative;
+  width: 80%;
+  height: 70px; }
+
+.active-icon {
+  fill: #e95124; }
+
+/* TEMPERATURE MODULE
+===========================*/
+button.unit-toggle, button#reset, button#current {
+  color: white;
+  background-color: #16161a;
+  border: solid 1px #313137;
+  padding: 5px;
+  border-radius: 2px;
+  width: 10%; }
+  button.unit-toggle:focus, button#reset:focus, button#current:focus {
+    outline: none; }
+
+.button-group-right {
+  margin-left: -6px; }
+
+button.unit-active {
+  background-color: #1b1b1f; }
+
+.temp-module span {
+  font-size: 3em; }
+
+aside.update-info {
+  margin-top: 120px;
+  font-size: 13px;
+  font-weight: 100; }
+
+#year-range-wrapper {
+  text-align: center; }
+
+#year-range {
+  margin: 0;
+  text-align: center; }
+
+#temp-graph {
+  position: relative; }
+
+#graph-ui {
+  display: none; }
+
+.min-bul {
+  color: #e95124;
+  font-size: 28px; }
+
+.max-bul {
+  color: red;
+  font-size: 28px; }
+
+.legend {
+  display: block;
+  padding-top: 15px;
+  text-align: center;
+  font-weight: 100; }
+
+input#time-traveler {
+  display: block;
+  margin: 20px auto;
+  width: 70%; }
+  input#time-traveler::before {
+    content: "Present";
+    margin: -50px;
+    font-size: 11px;
+    font-weight: 100; }
+
+/* SVG graphs styles
+========================*/
+path, .minLine, .maxLine {
+  stroke-width: 2;
+  fill: none; }
+
+.minLine {
+  stroke: #e95124; }
+
+.maxLine {
+  stroke: red; }
+
+.min-temp-chart-circle {
+  stroke: #e95124;
+  fill: #16161a; }
+
+.max-temp-chart-circle {
+  stroke: red;
+  fill: #16161a; }
+
+.axis path, .axis .minLine, .axis .maxLine,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges; }
+
+text {
+  fill: white;
+  font-weight: 100; }
+
+.axis text {
+  font-size: 12px; }
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  font: "proxima-nova";
+  font-size: 12px;
+  border: 0px;
+  border-radius: 2px; }
+
+/* Orbit Module Styles
+=====================*/
+#spacetime {
+  display: block;
+  margin: 0px auto; }
+
+#orbit-traveler {
+  width: 50%; }
+
+.orbit-btns {
+  margin-top: 30px; }
+
+.winter {
+  color: aquamarine !important; }
+
+.summer {
+  color: yellow !important; }
+
+.spring {
+  color: greenyellow; }
+
+.autumn {
+  color: brown; }
+
+.earth-data {
+  color: #6db6ff; }
