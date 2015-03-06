@@ -610,8 +610,10 @@ var earthOrbitPosition,
     radii,
     now,
     currentEarthYear = new Date().getFullYear(),
-    daysSinceJanFirst = d3.time.days(new Date('01-01-' + currentEarthYear), new Date()).length;
+		daysSinceJanFirst = d3.time.days(new Date(currentEarthYear + "-01-01T00:00:00.000Z"), new Date()).length;
 
+
+console.log(daysSinceJanFirst);
 function drawSpaceTime() {
 
     now = new Date(d3.time.year.floor(new Date()));
