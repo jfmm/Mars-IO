@@ -100,11 +100,16 @@ img {
 
 
 #main-dash {
-	//height: 100%;
-	padding: 80px 40px;
+	padding: 40px 20px;
 	background-color: $dark-black;
 	margin-left: 80px; //offsets sidebar
 	position: relative;
+	margin-left: 0px;
+	
+	@media screen and ( min-width: $phone) {
+		margin-left: 80px;
+		padding: 80px 40px;
+	}
 }
 
 
@@ -119,9 +124,13 @@ div.selected {
 }
 
 .dash-module {
-	width: 50%;
+	width: 100%;
 	float: left;
 	display: inline-block;
+	
+	@media screen and (min-width: $phone){
+		width: 50%;
+	}
 }
 
 .mars-data {
@@ -130,6 +139,10 @@ div.selected {
 
 .module-heading {
 	font-weight: normal;
+	font-size: 20px;
+	@media screen and (min-width: $phone){
+		font-size: 24px;
+	}
 }
 
 
@@ -147,8 +160,11 @@ div.selected {
 
 footer {
 	text-align: center;
-  //height: 50px;
-  padding: 40px 0px;
+  padding: 40px 20px;
+	
+	@media screen and (min-width: $phone) {
+		padding: 40px 0px;
+	}
 }
 
 

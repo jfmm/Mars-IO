@@ -431,7 +431,8 @@ function drawChart(tempUnit, loadCached, archiveKey) {
         width = 600 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
 
-
+console.log(width);
+console.log(height);
 
     // Set the ranges
     var x = d3.time.scale().range([0, width]);
@@ -458,6 +459,8 @@ function drawChart(tempUnit, loadCached, archiveKey) {
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+				.attr("viewBox", "0,0,600,270")
+				.attr("preserveAspectRatio", "xMidYMid")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -1050,3 +1053,23 @@ function computeEarthMonth(day) {
     return month;
 
 }
+
+
+
+
+
+//
+//var aspect = 600 / 270,
+//    chart = $("#temp-graph > svg");
+//$(window).on("resize", function() {
+//	
+//		console.log(window.outerWidth);
+//		if(window.outerWidth < 1280) {
+//		
+//			var targetWidth = chart.parent().width();
+//    	chart.attr("width", targetWidth);
+//    	chart.attr("height", targetWidth / aspect);
+//		}
+//    
+//});
+

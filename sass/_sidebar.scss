@@ -6,6 +6,10 @@ aside#sidebar-nav {
 	background-color: $sidebar-black;
 	min-height: 100%;
 	width: 80px;
+	display: none;
+	@media screen and(min-width: $phone) {
+		display: block;
+	}
 }
 
 ul.sidebar-nav-icons {
