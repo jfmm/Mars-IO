@@ -60,7 +60,7 @@ var currentSol; //current day number out of the 668.6 days
             minTemp = data.report.min_temp; // in celsius
             maxTemp = data.report.max_temp; // in celsius
             minTempF = data.report.min_temp_fahrenheit;
-            maxTempF = data.report.max_temp_fahrenheit;
+            maxTempF = data.report.max_temp_fahrenheit; // Set non-null value if API returns null
             condition = data.report.atmo_opacity; // always sunny, apparently...
 
 
@@ -863,10 +863,6 @@ drawSpaceTime();
     sidebarlink.on('click', function() {
         var clickedButton = $(this);
         var mod = clickedButton.data("module");
-        //var selectedModule = $('div[class~="selected"]');
-
-        //selectedModule.removeClass("selected").siblings().addClass("selected");
-
 
         switch (mod) {
             case "sol":
