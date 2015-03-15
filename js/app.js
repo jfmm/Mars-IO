@@ -313,8 +313,8 @@ var currentSol; //current day number out of the 668.6 days
     $('.unit-toggle').on('click', function(e) {
 
         var unitSymbol = $('.unit-symbol');
-        var unit = this.dataset.unit;
         var button = $(this);
+				var unit = button.data("unit");
 
 
         if (unit === 'celsius') {
