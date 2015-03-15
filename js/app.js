@@ -313,8 +313,8 @@ var currentSol; //current day number out of the 668.6 days
     $('.unit-toggle').on('click', function(e) {
 
         var unitSymbol = $('.unit-symbol');
-        var unit = this.dataset.unit;
         var button = $(this);
+				var unit = button.data("unit");
 
 
         if (unit === 'celsius') {
@@ -431,8 +431,6 @@ function drawChart(tempUnit, loadCached, archiveKey) {
         width = 600 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
 
-console.log(width);
-console.log(height);
 
     // Set the ranges
     var x = d3.time.scale().range([0, width]);
