@@ -469,13 +469,13 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 
         d.date = new Date(d.date); // ->> this works
         var year = d.date.getFullYear();
-
-        years.push(year.toString());
+        
+        years.push(year.toString()); // push all 10 years of current dataset
 
     });
 
 
-    var yearRange = [years[0], years[years.length - 1]];
+    var yearRange = [years[0], years[years.length - 1]]; // store first and last year in dataset
 
     if (yearRange[0] === yearRange[1])
         d3.select("#year-range").text(yearRange[0]);
@@ -889,6 +889,7 @@ drawSpaceTime();
                 // show temp module
                 $('#temp-module').addClass("selected").siblings().removeClass("selected");
                 break;
+           
             case "about":
                 // show about module
                 $('#about-module').addClass("selected").siblings().removeClass("selected");
