@@ -794,7 +794,19 @@ drawSpaceTime();
 
     /* Event Handlers for Orbit Module Slider
     ============================================*/
-    orbitSlider.on("input", function() {
+    var eventType;
+    //User is using Internet Explorer
+    if (window.navigator.userAgent.indexOf("MSIE") >= 0) {
+        console.log("IE is being used");
+        eventType = "change"; // listen for 'change' event as it behaves like 'input' event in IE
+    }   
+    else {
+        //otherwise, do the input event handling
+        console.log("a cool browser is being used");
+        eventType = "input";
+    }
+    
+    orbitSlider.on(eventType, function() {
 
         var sol = this.value;
 
