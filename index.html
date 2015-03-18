@@ -192,6 +192,11 @@ _____ ______   ________  ________  ________       ___  ________
 				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 			<!-- Place this tag right after the last button or just before your close body tag. -->
 <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+        
+        <!-- If IE, Bind on change event to sol module slider, since on input is not recognized-->
+        <!--[if IE]>
+        <script>!function(t){t("#orbit-traveler").on("change",function(){var t=this.value;day=365>=t?t:t-365,movePlanets(t),orbitLegend.text("Sol# "+t),solNum.text(t),marsSeason.text(computeSeason(t)),marsMonth.text(computeMonthNumber(t)),earthMonth.text(computeEarthMonth(day))})}(jQuery);</script>
+        <![endif]-->
     </body>
 
 </html>
