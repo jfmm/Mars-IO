@@ -60,7 +60,7 @@ var currentSol; //current day number out of the 668.6 days
             minTemp = data.report.min_temp; // in celsius
             maxTemp = data.report.max_temp; // in celsius
             minTempF = data.report.min_temp_fahrenheit;
-            maxTempF = data.report.max_temp_fahrenheit;
+            maxTempF = data.report.max_temp_fahrenheit; // Set non-null value if API returns null
             condition = data.report.atmo_opacity; // always sunny, apparently...
 
 
@@ -432,7 +432,6 @@ function drawChart(tempUnit, loadCached, archiveKey) {
         height = 270 - margin.top - margin.bottom;
 
 
-
     // Set the ranges
     var x = d3.time.scale().range([0, width]);
     var y = d3.scale.linear().range([height, 0]);
@@ -458,6 +457,8 @@ function drawChart(tempUnit, loadCached, archiveKey) {
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+				.attr("viewBox", "0,0,600,270")
+				.attr("preserveAspectRatio", "xMidYMid")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -610,7 +611,9 @@ var earthOrbitPosition,
     radii,
     now,
     currentEarthYear = new Date().getFullYear(),
+
 		daysSinceJanFirst = d3.time.days(new Date(currentEarthYear + "-01-01T00:00:00.000Z"), new Date()).length;
+
 
 
 console.log(daysSinceJanFirst);
@@ -865,10 +868,6 @@ drawSpaceTime();
     sidebarlink.on('click', function() {
         var clickedButton = $(this);
         var mod = clickedButton.data("module");
-        //var selectedModule = $('div[class~="selected"]');
-
-        //selectedModule.removeClass("selected").siblings().addClass("selected");
-
 
         switch (mod) {
             case "sol":
@@ -1056,3 +1055,6 @@ function computeEarthMonth(day) {
     return month;
 
 }
+
+
+

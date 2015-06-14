@@ -2,7 +2,11 @@
 ==============================*/
 
 .container {
-	padding: 20px 40px;
+	padding: 20px 20px;
+	
+	@media screen and(min-width: $phone){
+		padding: 20px 40px;
+	}
 }
 
 

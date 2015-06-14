@@ -1,3 +1,5 @@
+/* Responsive breakpoints (mobile first)
+========================*/
 /* COLOR PALETTE
 ==============================*/
 /*Typography
@@ -15,7 +17,7 @@ html {
 
 body {
   background-color: #1b1b1f;
-  color: white;
+  color: #fff;
   font-family: "proxima-nova";
   position: relative;
   height: 100%; }
@@ -78,10 +80,15 @@ img {
   color: #e95124; }
 
 #main-dash {
-  padding: 80px 40px;
+  padding: 40px 20px;
   background-color: #16161a;
   margin-left: 80px;
-  position: relative; }
+  position: relative;
+  margin-left: 0px; }
+  @media screen and (min-width: 500px) {
+    #main-dash {
+      margin-left: 80px;
+      padding: 80px 40px; } }
 
 div.selected {
   display: block !important; }
@@ -90,15 +97,22 @@ div.selected {
   display: none; }
 
 .dash-module {
-  width: 50%;
+  width: 100%;
   float: left;
   display: inline-block; }
+  @media screen and (min-width: 500px) {
+    .dash-module {
+      width: 50%; } }
 
 .mars-data {
   color: #e95124; }
 
 .module-heading {
-  font-weight: normal; }
+  font-weight: normal;
+  font-size: 20px; }
+  @media screen and (min-width: 500px) {
+    .module-heading {
+      font-size: 24px; } }
 
 #reset, #current {
   width: 25% !important; }
@@ -109,12 +123,18 @@ div.selected {
 
 footer {
   text-align: center;
-  padding: 40px 0px; }
+  padding: 40px 20px; }
+  @media screen and (min-width: 500px) {
+    footer {
+      padding: 40px 0px; } }
 
 /* UTILITY CLASSES
 ==============================*/
 .container {
-  padding: 20px 40px; }
+  padding: 20px 20px; }
+  @media screen and (min-width: 500px) {
+    .container {
+      padding: 20px 40px; } }
 
 .error {
   color: red; }
@@ -125,7 +145,11 @@ aside#sidebar-nav {
   position: fixed;
   background-color: #131313;
   min-height: 100%;
-  width: 80px; }
+  width: 80px;
+  display: none; }
+  @media screen and (min-width: 500px) {
+    aside#sidebar-nav {
+      display: block; } }
 
 ul.sidebar-nav-icons {
   list-style: none;
@@ -154,15 +178,24 @@ ul.sidebar-nav-icons {
 
 /* TEMPERATURE MODULE
 ===========================*/
+.graph-module {
+  display: none; }
+  @media screen and (min-width: 1200px) {
+    .graph-module {
+      display: block; } }
+
 button.unit-toggle, button#reset, button#current {
-  color: white;
+  color: #fff;
   background-color: #16161a;
   border: solid 1px #313137;
   padding: 5px;
   border-radius: 2px;
-  width: 10%; }
+  width: 50%; }
   button.unit-toggle:focus, button#reset:focus, button#current:focus {
     outline: none; }
+  @media screen and (min-width: 500px) {
+    button.unit-toggle, button#reset, button#current {
+      width: 10%; } }
 
 .button-group-right {
   margin-left: -6px; }
@@ -174,9 +207,12 @@ button.unit-active {
   font-size: 3em; }
 
 aside.update-info {
-  margin-top: 120px;
+  margin-top: 20px;
   font-size: 13px;
   font-weight: 100; }
+  @media screen and (min-width: 500px) {
+    aside.update-info {
+      margin-top: 120px; } }
 
 #year-range-wrapper {
   text-align: center; }
@@ -286,3 +322,5 @@ div.tooltip {
 
 .earth-data {
   color: #6db6ff; }
+
+/*# sourceMappingURL=styles.css.map */
