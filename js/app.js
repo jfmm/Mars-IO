@@ -479,13 +479,13 @@ function drawChart(tempUnit, loadCached, archiveKey) {
 
         d.date = new Date(d.date); // ->> this works
         var year = d.date.getFullYear();
-
-        years.push(year.toString());
+        
+        years.push(year.toString()); // push all 10 years of current dataset
 
     });
 
 
-    var yearRange = [years[0], years[years.length - 1]];
+    var yearRange = [years[0], years[years.length - 1]]; // store first and last year in dataset
 
     if (yearRange[0] === yearRange[1])
         d3.select("#year-range").text(yearRange[0]);
@@ -812,7 +812,19 @@ drawSpaceTime();
 
     /* Event Handlers for Orbit Module Slider
     ============================================*/
-    orbitSlider.on("input", function() {
+    var eventType;
+    //User is using Internet Explorer
+    if (window.navigator.userAgent.indexOf("MSIE") >= 0) {
+        console.log("IE is being used");
+        eventType = "change"; // listen for 'change' event as it behaves like 'input' event in IE
+    }   
+    else {
+        //otherwise, do the input event handling
+        console.log("a cool browser is being used");
+        eventType = "input";
+    }
+    
+    orbitSlider.on(eventType, function() {
 
         var sol = this.value;
 
@@ -897,6 +909,7 @@ drawSpaceTime();
                 // show temp module
                 $('#temp-module').addClass("selected").siblings().removeClass("selected");
                 break;
+           
             case "about":
                 // show about module
                 $('#about-module').addClass("selected").siblings().removeClass("selected");
