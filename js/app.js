@@ -20,6 +20,7 @@ var celsiusTemperatureArchive = [];
 var fahrenheitTemperatureArchive = [];
 var archivePage;
 var archivePageKey;
+var numberOfArchivePages;
 
 
 // Orbit and time calculation global variables AND CONSTANTS
@@ -262,7 +263,10 @@ var currentSol; //current day number out of the 668.6 days
             // that will be used for charting
             function getDataSet(data) {
 
-                    console.log("JSONP REQUEST COMPLETE");
+         
+                    numberOfArchivePages = Math.ceil(data.count / 10); // get the number of archive pages there are
+              
+                    $("#time-traveler").attr("max", numberOfArchivePages * 10); // set the input slider max value 
 
                     $.each(data.results, function(index, value) {
 
