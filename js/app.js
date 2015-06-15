@@ -53,7 +53,8 @@ var currentSol; //current day number out of the 668.6 days
 
         function getData(data) {
 
-            jsonReportLatest = data.report;
+    
+            jsonReportLatest = data.report; 
             updatedOn = data.report.terrestrial_date;
             sol = data.report.sol;
             solarLongitue = data.report.ls;
@@ -84,6 +85,11 @@ var currentSol; //current day number out of the 668.6 days
             //these computations are for sol module
             solsSinceCuriosityLanded = sol + days; // this offsets the latency of data received by adding the days since we last got data
             currentSol = solsSinceCuriosityLanded + SOL_CURIOSITY_LANDED - MARS_YEAR_LENGTH; // get the current day of mars
+          
+            // if the current sol value is greater than the actual year lenght, a new year has started so calculate it
+            if(currentSol > MARS_YEAR_LENGTH) currentSol = currentSol - MARS_YEAR_LENGTH; 
+          
+          
             var earthYears = ((solsSinceCuriosityLanded + (solsSinceCuriosityLanded * 0.040)) / 365).toFixed(1); // computes how many Earth years since rover landed
             var marsYears = (solsSinceCuriosityLanded / MARS_YEAR_LENGTH).toFixed(1); // computes how many Martian years since rover landed
 
@@ -616,7 +622,6 @@ var earthOrbitPosition,
 
 
 
-console.log(daysSinceJanFirst);
 function drawSpaceTime() {
 
     now = new Date(d3.time.year.floor(new Date()));
@@ -725,13 +730,20 @@ function movePlanets(sol) {
     if (sol) {
 
         var duration = 0; // animate without delays
-
+        
+        if(sol < 365) 
+          var earthDay = sol;
+        else
+          var earthDay = sol - 365;
+      
 
         // use output value of slider to adjust the position of the planets
-        var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * (sol / 365)));
+        var interpolateEarthOrbitPosition = d3.interpolate(earthOrbitPosition.endAngle()(), (2 * Math.PI * (earthDay / 365)));
         var interpolateMarsOrbitPosition = d3.interpolate(marsOrbitPosition.endAngle()(), (2 * Math.PI * (sol / MARS_YEAR_LENGTH)));
 
-    } else { // else we use the position of the planets in current time
+    } 
+  
+  else { // else we use the position of the planets in current time
 
         var duration = 800; // ease-in to position
 
