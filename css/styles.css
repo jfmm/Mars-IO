@@ -17,7 +17,7 @@ html {
 
 body {
   background-color: #1b1b1f;
-  color: #fff;
+  color: white;
   font-family: "proxima-nova";
   position: relative;
   height: 100%; }
@@ -118,8 +118,7 @@ div.selected {
   width: 25% !important; }
 
 .dash-module svg {
-  display: block;
-  margin: 0px auto; }
+  display: block; }
 
 footer {
   text-align: center;
@@ -185,7 +184,7 @@ ul.sidebar-nav-icons {
       display: block; } }
 
 button.unit-toggle, button#reset, button#current {
-  color: #fff;
+  color: white;
   background-color: #16161a;
   border: solid 1px #313137;
   padding: 5px;
@@ -322,5 +321,3 @@ div.tooltip {
 
 .earth-data {
   color: #6db6ff; }
-
-/*# sourceMappingURL=styles.css.map */
